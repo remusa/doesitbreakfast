@@ -16,11 +16,15 @@ const StyledLayout = styled.div`
     grid-area: main;
 
     display: flex;
-    justify-content: center;
+    flex-flow: column wrap;
+    justify-content: flex-start;
+    align-items: center;
   }
 `
 
-interface Props {}
+interface Props {
+  title?: string
+}
 
 const Layout: React.FC<Props> = props => {
   return (

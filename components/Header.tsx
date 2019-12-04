@@ -24,7 +24,7 @@ const Header: React.FC<Props> = () => (
         </Link>
       </span>
 
-      <span className='right'>
+      <span>
         <Link href='/about'>
           <a>About</a>
         </Link>
