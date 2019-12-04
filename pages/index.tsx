@@ -1,9 +1,7 @@
-import React from 'react'
-import styled from 'styled-components'
+import Layout from '../components/Layout'
 
-const Title = styled.h1`
-  color: red;
-  font-size: 50px;
-`
-
-export default () => <Title>My page</Title>
+export default () => (
+  <Layout>
+    <h1>My page</h1>
+  </Layout>
+)
