@@ -2,7 +2,7 @@
 const withOffline = require('next-offline')
 
 const nextConfig = {
-  // target: process.env.NEXT_TARGET || 'serverless',
+  target: 'serverless',
   // exportTrailingSlash: true,
   // exportPathMap: async function() {
   //   const paths = {
@@ -20,7 +20,7 @@ const nextConfig = {
   //   return paths;
   // },
 	workboxOpts: {
-		swDest: 'static/service-worker.js',
+		swDest: 'public/service-worker.js',
 		runtimeCaching: [
 			{
 				urlPattern: /[.](png|jpg|ico|css)/,
