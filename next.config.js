@@ -1,8 +1,24 @@
-// next.config.js
+// const fetch = require('isomorphic-unfetch');
 const withOffline = require('next-offline')
 
 const nextConfig = {
-  target: process.env.NEXT_TARGET || 'serverless',
+  // target: process.env.NEXT_TARGET || 'serverless',
+  // exportTrailingSlash: true,
+  // exportPathMap: async function() {
+  //   const paths = {
+  //     '/': { page: '/' },
+  //     '/about': { page: '/about' }
+  //   };
+  //   const res = await fetch('https://api.tvmaze.com/search/shows?q=batman');
+  //   const data = await res.json();
+  //   const shows = data.map(entry => entry.show);
+
+  //   shows.forEach(show => {
+  //     paths[`/show/${show.id}`] = { page: '/show/[id]', query: { id: show.id } };
+  //   });
+
+  //   return paths;
+  // },
 	workboxOpts: {
 		swDest: 'static/service-worker.js',
 		runtimeCaching: [
