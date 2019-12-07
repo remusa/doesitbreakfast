@@ -22,6 +22,10 @@ const Header: React.FC<Props> = () => (
         <Link href='/'>
           <a>Home</a>
         </Link>
+
+        <Link href='/submit'>
+          <a>Submit food</a>
+        </Link>
       </span>
 
       <span>
