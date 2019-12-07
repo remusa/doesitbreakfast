@@ -2,6 +2,7 @@
 const withOffline = require('next-offline')
 
 const nextConfig = {
+  // env: env,
   target: 'serverless',
   // exportTrailingSlash: true,
   // exportPathMap: async function() {
