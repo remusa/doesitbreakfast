@@ -1,25 +1,26 @@
 // const fetch = require('isomorphic-unfetch');
 const withOffline = require('next-offline')
+// import * as Firebase from './lib/firebase'
 
 const nextConfig = {
-  // env: env,
-  target: 'serverless',
   // exportTrailingSlash: true,
   // exportPathMap: async function() {
   //   const paths = {
   //     '/': { page: '/' },
   //     '/about': { page: '/about' }
-  //   };
-  //   const res = await fetch('https://api.tvmaze.com/search/shows?q=batman');
-  //   const data = await res.json();
-  //   const shows = data.map(entry => entry.show);
+  //   }
 
-  //   shows.forEach(show => {
-  //     paths[`/show/${show.id}`] = { page: '/show/[id]', query: { id: show.id } };
-  //   });
+  //   const snapshot = await Firebase.firestore.collection('entries').get()
 
-  //   return paths;
+  //   snapshot.forEach(doc => {
+  //     const entry = { ...doc.data(), id: doc.id }
+  //     paths[`/product/${entry.id}`] = { page: '/product/[id]', query: { id: entry.id } }
+  //   })
+
+  //   return paths
   // },
+  // env: env,
+  target: 'serverless',
 	workboxOpts: {
 		swDest: 'public/service-worker.js',
 		runtimeCaching: [
