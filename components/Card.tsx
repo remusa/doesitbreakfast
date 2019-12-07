@@ -1,13 +1,17 @@
+import Link from 'next/link'
 import React from 'react'
 import styled from 'styled-components'
 
 const CardStyles = styled.div`
   width: 250px;
-  height: 300px;
+  height: 250px;
   overflow-y: scroll;
   border-radius: 3px;
   box-shadow: 0 15px 25px 0 grey;
   margin: 8px;
+  padding: 8px;
+  text-align: center;
+  cursor: pointer;
 
   .name {
     font-weight: bold;
@@ -25,32 +29,29 @@ const CardStyles = styled.div`
   }
 `
 
-interface Props {
+export interface IEntry {
   entry: {
     id: string
     name: string
     type: string
-    breaks_fast: string
+    breaks: string
     description: string
+    sources?: string[] | string
   }
 }
 
-const Card: React.FC<Props> = ({ entry }) => {
+const Card: React.FC<IEntry> = ({ entry }) => {
   return (
-    <CardStyles key={entry.id}>
-      <p>
-        Name:<span className='name'> {entry.name}</span>
-      </p>
-
-      <p className='type'>Type: {entry.type}</p>
-
-      <p>
-        Breaks fast:
-        <span className='breaks-fast'> {entry.breaks_fast}</span>
-      </p>
-
-      <p className='description'>Description: {entry.description}</p>
-    </CardStyles>
+    <Link href='/product/[id]' as={`/product/${entry.id}`}>
+      <CardStyles key={entry.id}>
+        <h3 className='name'>{entry.name}</h3>
+        <p className='type'>Type: {entry.type}</p>
+        <p>
+          Breaks fast:
+          <span className='breaks-fast'> {entry.breaks}</span>
+        </p>
+      </CardStyles>
+    </Link>
   )
 }
 
