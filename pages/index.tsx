@@ -2,9 +2,9 @@ import 'isomorphic-fetch'
 import { NextPage, NextPageContext } from 'next'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import Card from '../components/Card'
+import Card, { IEntry } from '../components/Card'
 import Layout from '../components/Layout'
-import { GET_DATA } from '../lib/db'
+import { firestore } from '../lib/firebase'
 
 const CardContainer = styled.div`
   display: flex;
@@ -16,26 +16,23 @@ const CardContainer = styled.div`
 `
 
 interface IProps {
-  entries: any
+  entries: IEntry[] | any
 }
 
 const Index: NextPage<IProps> = ({ entries }) => {
-  const [search, setSearch] = useState<string>('')
-  const [filteredEntries, setFilteredEntries] = useState(entries)
+  const [search, setSearch] = useState('')
   const [selected, setSelected] = useState('All')
+  const [filteredEntries, setFilteredEntries] = useState(entries)
 
   useEffect(() => {
-    let filtered
+    let filtered = entries
 
     if (selected !== 'All') {
       filtered = entries.filter(
         entry =>
           entry.name.toLowerCase().includes(search.toLowerCase()) &&
-          entry.description.toLowerCase().includes(search.toLowerCase()) &&
           entry.type.toLowerCase() === selected.toLowerCase()
       )
-    } else {
-      filtered = entries
     }
 
     setFilteredEntries(filtered)
@@ -43,19 +40,16 @@ const Index: NextPage<IProps> = ({ entries }) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
-
-    if (e.target.name === 'search') {
-      setSearch(e.target.value)
-    }
+    setSearch(e.target.value)
   }
 
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     e.preventDefault()
-
     setSelected(e.target.value)
   }
 
   const handleClear = (e: React.MouseEvent<HTMLInputElement & HTMLSelectElement>) => {
+    e.preventDefault()
     setSearch('')
     setSelected('All')
   }
@@ -90,7 +84,7 @@ const Index: NextPage<IProps> = ({ entries }) => {
 
       <CardContainer>
         {filteredEntries.map(entry => (
-          <Card entry={entry} key={entry.name} />
+          <Card entry={entry} key={entry.id} />
         ))}
       </CardContainer>
     </Layout>
@@ -100,7 +94,13 @@ const Index: NextPage<IProps> = ({ entries }) => {
 interface Context extends NextPageContext {}
 
 Index.getInitialProps = async (ctx: Context) => {
-  const entries = await GET_DATA()
+  const entries = []
+
+  const snapshot = await firestore.collection('entries').get()
+
+  snapshot.forEach(doc => {
+    entries.push({ ...doc.data(), id: doc.id })
+  })
   return { entries }
 }
 
