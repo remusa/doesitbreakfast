@@ -20,6 +20,10 @@ const StyledLayout = styled.div`
     justify-content: flex-start;
     align-items: center;
   }
+
+  h1 {
+    text-transform: capitalize;
+  }
 `
 
 interface Props {
