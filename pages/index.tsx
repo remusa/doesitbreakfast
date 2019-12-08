@@ -16,7 +16,7 @@ const CardContainer = styled.div`
 `
 
 interface IProps {
-  entries: IEntry[] | any
+  entries: IEntry[]
 }
 
 const Index: NextPage<IProps> = ({ entries }) => {

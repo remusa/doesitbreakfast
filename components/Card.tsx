@@ -30,17 +30,19 @@ const CardStyles = styled.div`
 `
 
 export interface IEntry {
-  entry: {
-    id: string
-    name: string
-    type: string
-    breaks: string
-    description: string
-    sources?: string[] | string
-  }
+  id: string
+  name: string
+  type: string
+  breaks: string
+  description: string
+  sources?: string[] | string
 }
 
-const Card: React.FC<IEntry> = ({ entry }) => {
+export interface IProps {
+  entry: IEntry
+}
+
+const Card: React.FC<IProps> = ({ entry }) => {
   return (
     <Link href='/product/[id]' as={`/product/${entry.id}`}>
       <CardStyles key={entry.id}>

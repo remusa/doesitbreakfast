@@ -18,7 +18,7 @@ const FooterStyles = styled.div`
 
 interface Props {}
 
-const Footer: React.FC<Props> = props => {
+const Footer: React.FC<Props> = () => {
   const { theme, toggleTheme } = useContext(ThemeContext)
 
   return (
