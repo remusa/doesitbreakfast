@@ -10,6 +10,16 @@ const HeaderStyles = styled.header`
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    .left {
+      display: flex;
+      justify-content: space-between;
+
+      & > a {
+        flex: 1 1 auto;
+        min-width: 50px;
+      }
+    }
   }
 `
 
@@ -18,17 +28,21 @@ interface Props {}
 const Header: React.FC<Props> = () => (
   <HeaderStyles>
     <nav>
-      <span>
+      <div className='left'>
         <Link href='/'>
           <a>Home</a>
         </Link>
-      </span>
 
-      <span className='right'>
+        <Link href='/submit'>
+          <a>Submit food</a>
+        </Link>
+      </div>
+
+      <div className='right'>
         <Link href='/about'>
           <a>About</a>
         </Link>
-      </span>
+      </div>
     </nav>
   </HeaderStyles>
 )

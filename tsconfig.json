@@ -7,10 +7,13 @@
     "moduleResolution": "node",
     "allowJs": true,
     "noEmit": true,
-    "strict": true,
+    // TODO
+    "strict": false,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
-    "noUnusedLocals": true,
+    // TODO
+    "noUnusedLocals": false,
+    // TODO
     "noUnusedParameters": false,
     "removeComments": false,
     "preserveConstEnums": true,
@@ -21,5 +24,5 @@
     "isolatedModules": true
   },
   "exclude": ["node_modules"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "lib/firebase.js"]
 }

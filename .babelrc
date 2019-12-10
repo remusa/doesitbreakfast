@@ -1,4 +1,8 @@
 {
   "presets": ["next/babel"],
-  "plugins": [["styled-components", { "ssr": true }]]
+  "plugins": [
+    "dynamic-import-webpack",
+    "@babel/plugin-syntax-dynamic-import",
+    ["styled-components", { "ssr": true }]
+  ]
 }
