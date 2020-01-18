@@ -1,11 +1,15 @@
-import { NextPage } from 'next'
+import { NextPage, NextPageContext } from 'next'
 import { useRouter } from 'next/dist/client/router'
 import React from 'react'
 import { IEntry } from '../../components/Card'
 import Layout from '../../components/Layout'
 import { firestore } from '../../lib/firebase'
 
-const Product: NextPage<IEntry> = ({ entry }) => {
+interface Props {
+  entry: IEntry
+}
+
+const Product: NextPage<Props> = ({ entry }) => {
   const router = useRouter()
 
   return (
@@ -29,8 +33,10 @@ const Product: NextPage<IEntry> = ({ entry }) => {
   )
 }
 
-Product.getInitialProps = async context => {
-  const id = context.query.id
+interface Context extends NextPageContext {}
+
+Product.getInitialProps = async (ctx: Context) => {
+  const id = ctx.query.id
 
   const snapshot = await firestore
     .collection('entries')
@@ -39,7 +45,9 @@ Product.getInitialProps = async context => {
     // .doc(`entries/${name}`)
     .get()
 
-  return { entry: snapshot.data() }
+  const entry = snapshot.data()
+
+  return { entry }
 }
 
 export default Product
