@@ -1,50 +1,57 @@
+import { Button, Flex, Heading, Text } from '@chakra-ui/core'
 import Link from 'next/link'
-import styled from 'styled-components'
+import React, { useState } from 'react'
 
-const HeaderStyles = styled.header`
-  grid-area: header;
-
-  padding: 16px;
-
-  nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .left {
-      display: flex;
-      justify-content: space-between;
-
-      & > a {
-        flex: 1 1 auto;
-        min-width: 50px;
-      }
-    }
-  }
-`
+const MenuItems = ({ children }) => {
+  return (
+    <Text mt={{ base: 4, md: 0 }} mr={6} display='block'>
+      {children}
+    </Text>
+  )
+}
 
 interface Props {}
 
-const Header: React.FC<Props> = () => (
-  <HeaderStyles>
-    <nav>
-      <div className='left'>
-        <Link href='/'>
-          <a>Home</a>
-        </Link>
+const Header: React.FC<Props> = props => {
+  const [show, setShow] = useState<boolean>(false)
 
+  const handleToggle = () => setShow(!show)
+
+  return (
+    <Flex
+      w='100%'
+      as='nav'
+      align='center'
+      justify='space-between'
+      wrap='wrap'
+      padding='1.5rem'
+      bg='teal.500'
+      color='white'
+      {...props}
+    >
+      <Flex align='center' mr={5}>
+        <Link href='/'>
+          <a>
+            <Heading as='h1' size='lg' letterSpacing={'-.1rem'}>
+              Home
+            </Heading>
+          </a>
+        </Link>
+      </Flex>
+
+      <Button variantColor='teal'>
         <Link href='/submit'>
           <a>Submit food</a>
         </Link>
-      </div>
+      </Button>
 
-      <div className='right'>
+      <Button variantColor='teal'>
         <Link href='/about'>
           <a>About</a>
         </Link>
-      </div>
-    </nav>
-  </HeaderStyles>
-)
+      </Button>
+    </Flex>
+  )
+}
 
 export default Header
