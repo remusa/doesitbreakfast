@@ -60,11 +60,7 @@ const Index: NextPage<IProps> = ({ entries }) => {
 
       <form>
         <label htmlFor='search'>Search...</label>
-        <input
-          name='search'
-          placeholder='Drink, additive, condiment, supplement, etc.'
-          onChange={handleChange}
-        />
+        <input name='search' placeholder='Product name, type, etc.' onChange={handleChange} />
         <button type='button' onClick={handleClear}>
           Clear
         </button>
