@@ -20,8 +20,7 @@ export const darkTheme = {
 }
 
 export const GlobalStyle = createGlobalStyle`
-    @import url('https://fonts.googleapis.com/css?family=Lato&display=swap');
-    @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+    @import url('https://fonts.googleapis.com/css?family=Barlow&display=swap');
 
     html {
         box-sizing: border-box;
@@ -41,7 +40,7 @@ export const GlobalStyle = createGlobalStyle`
         padding: 0;
         background-color: ${props => props.theme.background};
         color: ${props => props.theme.font};
-        font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        font-family: "Barlow", 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
         line-height: 2;
         text-rendering: optimizeLegibility;
         -webkit-font-smoothing: antialiased;
@@ -53,7 +52,7 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     h1, h2, h3, h4, h5, h6 {
-        font-family: 'Montserrat', sans-serif;
+        /* font-family: 'Barlow', sans-serif; */
         cursor: default;
     }
 
