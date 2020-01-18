@@ -52,6 +52,7 @@ const Card: React.FC<IProps> = ({ entry }) => {
           Breaks fast:
           <span className='breaks-fast'> {entry.breaks}</span>
         </p>
+        <p>Description: {entry.description}</p>
       </CardStyles>
     </Link>
   )
