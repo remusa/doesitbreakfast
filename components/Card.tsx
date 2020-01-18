@@ -1,6 +1,6 @@
+import styled from '@emotion/styled'
 import Link from 'next/link'
 import React from 'react'
-import styled from 'styled-components'
 
 const CardStyles = styled.div`
   width: 250px;
@@ -52,6 +52,7 @@ const Card: React.FC<IProps> = ({ entry }) => {
           Breaks fast:
           <span className='breaks-fast'> {entry.breaks}</span>
         </p>
+        <p>Description: {entry.description}</p>
       </CardStyles>
     </Link>
   )

@@ -2,8 +2,8 @@
     Source: https://upmostly.com/tutorials/build-a-react-switch-toggle-component
 */
 
+import styled from '@emotion/styled'
 import React from 'react'
-import styled from 'styled-components'
 
 const ToggleWrapper = styled.span`
   display: flex;

@@ -1,7 +1,8 @@
+import { Button, FormControl, FormLabel, Heading, Input, Select } from '@chakra-ui/core'
+import styled from '@emotion/styled'
 import 'isomorphic-fetch'
 import { NextPage, NextPageContext } from 'next'
 import { useEffect, useState } from 'react'
-import styled from 'styled-components'
 import Card, { IEntry } from '../components/Card'
 import Layout from '../components/Layout'
 import { firestore } from '../lib/firebase'
@@ -56,30 +57,35 @@ const Index: NextPage<IProps> = ({ entries }) => {
 
   return (
     <Layout>
-      <h1>Does it break a fast?</h1>
+      <Heading as='h1'>Does it break a fast?</Heading>
 
       <form>
-        <label htmlFor='search'>Search...</label>
-        <input
-          name='search'
-          placeholder='Drink, additive, condiment, supplement, etc.'
-          onChange={handleChange}
-        />
-        <button type='button' onClick={handleClear}>
-          Clear
-        </button>
+        <FormControl>
+          <FormLabel htmlFor='search'>Search: </FormLabel>
+          <Input
+            name='search'
+            variant='flushed'
+            placeholder='Product name, type, etc.'
+            value={search}
+            onChange={handleChange}
+          />
+        </FormControl>
 
-        <div>
-          <label htmlFor='type'>Type: </label>
-          <select name='type' value={selected} onChange={handleSelect}>
+        <FormControl>
+          <FormLabel htmlFor='type'>Type: </FormLabel>
+          <Select name='type' variant='flushed' value={selected} onChange={handleSelect}>
             <option value='All'>All</option>
             <option value='Common Drinks'>Common Drinks</option>
             <option value='Additions/Condiments'>Additions/Condiments</option>
             <option value='Non-caloric Sweeteners'>Non-caloric Sweeteners</option>
             <option value='Supplements'>Supplements</option>
             <option value='Breath-Freshening Items'>Breath-Freshening Items</option>
-          </select>
-        </div>
+          </Select>
+        </FormControl>
+
+        <Button type='button' variantColor='pink' variant='outline' onClick={handleClear}>
+          Clear
+        </Button>
       </form>
 
       <CardContainer>

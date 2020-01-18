@@ -1,44 +1,31 @@
+import { Flex } from '@chakra-ui/core'
 import React from 'react'
-import styled from 'styled-components'
 import Footer from './Footer'
 import Header from './Header'
 
-const StyledLayout = styled.div`
-  display: grid;
-  grid-template-columns: 100%;
-  grid-template-rows: auto minmax(auto, 1fr) auto;
-  grid-template-areas: 'header' 'main' 'footer';
-
-  height: 100vh;
-  width: 100%;
-
-  main {
-    grid-area: main;
-
-    display: flex;
-    flex-flow: column wrap;
-    justify-content: flex-start;
-    align-items: center;
-  }
-
-  h1 {
-    text-transform: capitalize;
-  }
-`
-
 interface Props {
   title?: string
+  children: any
 }
 
 const Layout: React.FC<Props> = props => {
   return (
-    <StyledLayout>
+    <Flex w='100%' h='100vh' flexDirection='column' alignItems='center'>
       <Header />
 
-      <main>{props.children}</main>
+      <Flex
+        as='main'
+        h='100vh'
+        paddingY='1.5rem'
+        flexDirection='column'
+        justifyContent='flex-start'
+        alignItems='center'
+      >
+        {props.children}
+      </Flex>
 
       <Footer />
-    </StyledLayout>
+    </Flex>
   )
 }
 
