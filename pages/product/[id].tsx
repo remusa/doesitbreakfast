@@ -1,4 +1,12 @@
-import { Flex, Heading, List, ListIcon, ListItem, Text } from '@chakra-ui/core'
+import {
+  Flex,
+  Heading,
+  Image,
+  List,
+  ListIcon,
+  ListItem,
+  Text,
+} from '@chakra-ui/core'
 import { NextPage, NextPageContext } from 'next'
 import React from 'react'
 import { IEntry } from '../../components/Card'
@@ -32,6 +40,15 @@ const Product: NextPage<Props> = ({ entry }) => {
             Description: {entry.description}
           </ListItem>
         </List>
+        <Flex justify='center' mt={4}>
+          <Image
+            size='100px'
+            objectFit='cover'
+            src={entry.image}
+            fallbackSrc='https://via.placeholder.com/150'
+            alt={`${entry.name} image`}
+          />
+        </Flex>
         {typeof entry.sources !== 'string' ? (
           <List as='ol'>
             {entry.sources.map((e, index) => (

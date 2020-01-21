@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Text } from '@chakra-ui/core'
+import { Box, Flex, Heading, Image, Text } from '@chakra-ui/core'
 import Link from 'next/link'
 import React from 'react'
 
@@ -9,6 +9,7 @@ export interface IEntry {
   breaksFast: string
   description: string
   sources?: string[] | string
+  image?: string
 }
 
 export interface IProps {
@@ -50,6 +51,15 @@ const Card: React.FC<IProps> = ({ entry }) => {
         </Text>
         {/* <Text>Description:</Text>
         <Text>{entry.description}</Text> */}
+        <Flex justify='center'>
+          <Image
+            size='100px'
+            objectFit='cover'
+            src={entry.image}
+            fallbackSrc='https://via.placeholder.com/150'
+            alt={`${entry.name} image`}
+          />
+        </Flex>
       </Flex>
     </Link>
   )
