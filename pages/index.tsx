@@ -1,4 +1,12 @@
-import { Button, Flex, FormControl, FormLabel, Heading, Input, Select } from '@chakra-ui/core'
+import {
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
+  Select,
+} from '@chakra-ui/core'
 import 'isomorphic-fetch'
 import { NextPage, NextPageContext } from 'next'
 import { FormEvent, useEffect, useState } from 'react'
@@ -17,14 +25,16 @@ const Index: NextPage<Props> = ({ entries }) => {
 
   useEffect(() => {
     let filtered = entries
-    if (selected !== 'All') {
+    if (selected === 'All') {
+      filtered = entries.filter(entry =>
+        entry.name.toLowerCase().includes(search.toLowerCase())
+      )
+    } else {
       filtered = entries.filter(
         entry =>
           entry.name.toLowerCase().includes(search.toLowerCase()) &&
           entry.type.toLowerCase() === selected.toLowerCase()
       )
-    } else {
-      filtered = entries.filter(entry => entry.name.toLowerCase().includes(search.toLowerCase()))
     }
     setFilteredEntries(filtered)
   }, [search, selected])
@@ -43,7 +53,9 @@ const Index: NextPage<Props> = ({ entries }) => {
     e.preventDefault()
   }
 
-  const handleClear = (e: React.MouseEvent<HTMLInputElement & HTMLSelectElement>) => {
+  const handleClear = (
+    e: React.MouseEvent<HTMLInputElement & HTMLSelectElement>
+  ) => {
     e.preventDefault()
     setSearch('')
     setSelected('All')
@@ -69,24 +81,43 @@ const Index: NextPage<Props> = ({ entries }) => {
 
         <FormControl textAlign='center'>
           <FormLabel htmlFor='type'>Type</FormLabel>
-          <Select name='type' variant='flushed' value={selected} onChange={handleSelect}>
+          <Select
+            name='type'
+            variant='flushed'
+            value={selected}
+            onChange={handleSelect}
+          >
             <option value='All'>All</option>
             <option value='Common Drinks'>Common Drinks</option>
             <option value='Additions/Condiments'>Additions/Condiments</option>
-            <option value='Non-caloric Sweeteners'>Non-caloric Sweeteners</option>
+            <option value='Non-caloric Sweeteners'>
+              Non-caloric Sweeteners
+            </option>
             <option value='Supplements'>Supplements</option>
-            <option value='Breath-Freshening Items'>Breath-Freshening Items</option>
+            <option value='Breath-Freshening Items'>
+              Breath-Freshening Items
+            </option>
           </Select>
         </FormControl>
 
         <Flex justifyContent='center' mt={4}>
-          <Button type='button' variantColor='pink' variant='ghost' onClick={handleClear}>
+          <Button
+            type='button'
+            variantColor='pink'
+            variant='ghost'
+            onClick={handleClear}
+          >
             Clear
           </Button>
         </Flex>
       </form>
 
-      <Flex flexDirection='row' justifyContent='center' alignItems='center' mt={8}>
+      <Flex
+        flexDirection='row'
+        justifyContent='center'
+        alignItems='center'
+        mt={8}
+      >
         {filteredEntries.map(entry => (
           <Card entry={entry} key={entry.id} />
         ))}
