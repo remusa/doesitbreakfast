@@ -9,7 +9,7 @@ interface IContext {
 const ThemeContext = createContext({} as IContext)
 
 interface IProps {
-  children: HTMLElement
+  children: any
 }
 
 const ThemeProvider: React.FC<IProps> = ({ children }) => {
