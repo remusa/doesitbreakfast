@@ -1,17 +1,24 @@
-import styled from '@emotion/styled'
+import {
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
+  Radio,
+  RadioGroup,
+  Select,
+  Textarea,
+  useToast,
+} from '@chakra-ui/core'
 import { NextPage } from 'next'
+import { useRouter } from 'next/router'
 import React from 'react'
 import useForm from 'react-hook-form'
+import ErrorMessage from '../components/ErrorMessage'
 import Layout from '../components/Layout'
-import { firestore } from '../lib/firebase'
-
-const FormStyles = styled.form`
-  text-align: center;
-
-  .error-message {
-    color: red;
-  }
-`
+import { useAuth } from '../context/Firebase/AuthContext'
+import { firestore } from '../utils/firebase'
 
 interface Props {}
 
@@ -22,97 +29,128 @@ const Submit: NextPage<Props> = () => {
     errors,
     formState: { isSubmitting },
   } = useForm()
+  const toast = useToast()
+  const { user, loggedIn } = useAuth()
+  const router = useRouter()
+
+  if ((!user || !loggedIn) && typeof window !== 'undefined') {
+    router.push('/')
+  }
 
   const onSubmit = async (data, e) => {
-    const newEntry = { ...data, sources: data.sources.split('\n') }
-    console.log('newEntry', newEntry)
+    const newEntry = {
+      ...data,
+      breaksFast: data.breaksFast === 'yes' ? true : false,
+      sources: data.sources.split('\n'),
+      approved: false,
+    }
 
     const res = await firestore
       .collection('entries')
       .doc(data.name.toLowerCase())
-      .set(data)
-      .then(() => {})
-      .catch(error => {
-        console.error('Error writing document: ', error)
+      .set(newEntry)
+      .catch(e => {
+        toast({
+          title: 'Error submitting entry.',
+          description: `${e.message}`,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        })
+        return
       })
 
+    if (res === undefined) {
+      return
+    }
+
     if (res !== null) {
-      console.log('Document successfully written!')
+      toast({
+        title: 'Success!',
+        description: 'Entry successfully submitted.',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      })
       e.target.reset()
     }
   }
 
   return (
     <Layout>
-      <FormStyles onSubmit={handleSubmit(onSubmit)}>
-        <fieldset disabled={isSubmitting} aria-busy={isSubmitting}>
-          <h1 data-testid='submit-page'>Submit new food</h1>
+      <Flex textAlign='center' flexDirection='column'>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <fieldset disabled={isSubmitting} aria-busy={isSubmitting}>
+            <Heading as='h1' data-testid='submit-page'>
+              Submit new food
+            </Heading>
 
-          <div>
-            <label htmlFor='name'>Name: </label>
-            <input ref={register({ required: true })} name='name' type='input' />
+            <FormControl>
+              <FormLabel htmlFor='name'>Name</FormLabel>
+              <Input
+                ref={register({ required: true })}
+                name='name'
+                type='input'
+                variant='flushed'
+              />
+              {errors.name && <ErrorMessage message={errors.name.message} />}
+            </FormControl>
 
-            {errors.name && <span className='error-message'>{errors.name.message}</span>}
-          </div>
+            <FormControl>
+              <FormLabel htmlFor='type'>Type</FormLabel>
+              <Select ref={register} name='type' variant='flushed'>
+                <option value='Common Drinks'>Common Drinks</option>
+                <option value='Additions/Condiments'>Additions/Condiments</option>
+                <option value='Non-caloric Sweeteners'>Non-caloric Sweeteners</option>
+                <option value='Supplements'>Supplements</option>
+                <option value='Breath-Freshening Items'>Breath-Freshening Items</option>
+              </Select>
+              {errors.type && <ErrorMessage message={errors.type.message} />}
+            </FormControl>
 
-          <div>
-            <label htmlFor='type'>Type: </label>
-            <select ref={register} name='type'>
-              <option value='Common Drinks'>Common Drinks</option>
-              <option value='Additions/Condiments'>Additions/Condiments</option>
-              <option value='Non-caloric Sweeteners'>Non-caloric Sweeteners</option>
-              <option value='Supplements'>Supplements</option>
-              <option value='Breath-Freshening Items'>Breath-Freshening Items</option>
-            </select>
+            <FormControl mb={4}>
+              <FormLabel htmlFor='breaksFast'>Breaks fast?</FormLabel>
+              <RadioGroup name='breaksFast' spacing={5} isInline defaultValue='yes'>
+                <Radio
+                  name='breaksFast'
+                  value='yes'
+                  variantColor='red'
+                  ref={register({ required: true })}
+                >
+                  Yes
+                </Radio>
+                <Radio
+                  name='breaksFast'
+                  value='no'
+                  variantColor='green'
+                  ref={register({ required: true })}
+                >
+                  No
+                </Radio>
+              </RadioGroup>
+              {errors.breaksFast && <ErrorMessage message={errors.breaksFast.message} />}
+            </FormControl>
 
-            {errors.type && <span className='error-message'>{errors.type.message}</span>}
-          </div>
+            <FormControl>
+              <FormLabel htmlFor='description'>Description</FormLabel>
+              <Input ref={register({ required: true })} name='description' variant='flushed' />
+              {errors.description && <ErrorMessage message={errors.description.message} />}
+            </FormControl>
 
-          <div>
-            <label htmlFor='breaks'>Yes</label>
-            <input
-              ref={register({ required: true })}
-              name='breaks'
-              type='radio'
-              value='yes'
-              defaultChecked={false}
-            />
-            <label htmlFor='breaks'>No</label>
-            <input ref={register({ required: true })} name='breaks' type='radio' value='no' />
+            <FormControl>
+              <FormLabel htmlFor='sources'>Sources</FormLabel>
+              <Textarea ref={register} name='sources' variant='flushed' />
+              {errors.sources && <ErrorMessage message={errors.sources.message} />}
+            </FormControl>
 
-            {errors.breaks && <span className='error-message'>{errors.breaks.message}</span>}
-          </div>
-
-          <div>
-            <label htmlFor='description'>Description: </label>
-            <textarea ref={register({ required: true })} name='description' />
-
-            {errors.description && (
-              <span className='error-message'>{errors.description.message}</span>
-            )}
-          </div>
-
-          <div>
-            <label htmlFor='sources'>Sources: </label>
-            <textarea ref={register} name='sources' />
-
-            {errors.sources && <span className='error-message'>{errors.sources.message}</span>}
-          </div>
-
-          <div>
-            <button type='submit'>Submit</button>
-            <button type='reset'>Reset</button>
-          </div>
-        </fieldset>
-
-        {/* <div style={{ color: 'red' }}>
-          <pre>
-            {Object.keys(errors).length > 0 && (
-              <label>Errors: {JSON.stringify(errors, null, 2)}</label>
-            )}
-          </pre>
-        </div> */}
-      </FormStyles>
+            <Flex justifyContent='center' mt={4}>
+              <Button type='submit' variantColor='teal'>
+                Submit
+              </Button>
+            </Flex>
+          </fieldset>
+        </form>
+      </Flex>
     </Layout>
   )
 }
