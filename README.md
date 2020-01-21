@@ -2,6 +2,10 @@
 
 Simple app that checks whether some kind of food breaks a fast.
 
+* Deployed to:
+  * [Now.sh](https://doesitbreakfast.now.sh/)
+  * [Netlify](https://doesitbreakafast.netlify.com)
+
 ## Tech + tools
 
 - React

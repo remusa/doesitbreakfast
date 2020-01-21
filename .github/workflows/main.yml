@@ -1,6 +1,10 @@
 name: CI
 
-on: [push]
+on: [push] # [pull_request]
+# on:
+# push: # pull_request:
+#   branches:
+#     - master
 
 jobs:
   build:
@@ -26,6 +30,9 @@ jobs:
       # - name: Lint
       #   run: npm run lint
 
+      # - name: Prettify
+      #   run: npm run prettify
+
       - name: Test
         run: npm run test --if-present
 
@@ -34,11 +41,24 @@ jobs:
 
       - name: Export
         run: npm run export --if-present
-      # - name: Deploy
-      #   run: npm run deploy
-      #   with:
-      #     now-args: '--prod'
+
+      - name: Deploy to now.sh
+        run: now --prod
+        # with:
+        #   now-args: '--prod'
       #   env:
       #     GITHUB_TOKEN : ${{ secrets.GITHUB_TOKEN  }}
       #     ZEIT_TOKEN : ${{ secrets.ZEIT_TOKEN  }}
       #     ZEIT_TEAM_ID : ${{ secrets.ZEIT_TEAM_ID  }}
+
+      # - name: Deploy to Netlify
+      #   run: npm run deploy
+      #   env:
+      #     # Setup in Settings/Secrets
+      #     NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      #     NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+      # env:
+      #   CI: true
+      - name: Logs for Netlify
+        uses: bdougie/loglify@v1.0.0
