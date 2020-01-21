@@ -1,6 +1,7 @@
-import { Button, Flex, Heading, Text } from '@chakra-ui/core'
+import { Box, Button, Flex, Heading, Text, useDisclosure } from '@chakra-ui/core'
 import Link from 'next/link'
 import React, { useState } from 'react'
+import { useAuth } from '../context/Firebase/AuthContext'
 
 const MenuItems = ({ children }) => {
   return (
@@ -14,17 +15,25 @@ interface Props {}
 
 const Header: React.FC<Props> = props => {
   const [show, setShow] = useState<boolean>(false)
+  const { user, loggedIn, logout } = useAuth()
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const displayName = user ? user.displayName || user.email : ''
+
+  const handleLogout = () => {
+    logout()
+  }
 
   const handleToggle = () => setShow(!show)
 
   return (
     <Flex
-      w='100%'
       as='nav'
-      align='center'
-      justify='space-between'
+      w='100%'
+      justifyContent='space-between'
+      alignItems='center'
       wrap='wrap'
-      padding='1.5rem'
+      padding='1rem'
       bg='teal.500'
       color='white'
       {...props}
@@ -33,23 +42,52 @@ const Header: React.FC<Props> = props => {
         <Link href='/'>
           <a>
             <Heading as='h1' size='lg' letterSpacing={'-.1rem'}>
-              Home
+              Does it break a fast?
             </Heading>
           </a>
         </Link>
+
+        <Button variantColor='teal'>
+          <Link href='/about'>
+            <a>About</a>
+          </Link>
+        </Button>
       </Flex>
 
-      <Button variantColor='teal'>
-        <Link href='/submit'>
-          <a>Submit food</a>
-        </Link>
-      </Button>
+      {loggedIn && user && (
+        <Button variantColor='teal'>
+          <Link href='/submit'>
+            <a>Submit food</a>
+          </Link>
+        </Button>
+      )}
 
-      <Button variantColor='teal'>
-        <Link href='/about'>
-          <a>About</a>
-        </Link>
-      </Button>
+      <Box>
+        {!loggedIn && !user ? (
+          <>
+            <Button variantColor='teal'>
+              <Link href='/login'>
+                <a>Login</a>
+              </Link>
+            </Button>
+
+            <Button variantColor='teal'>
+              <Link href='/register'>
+                <a>Register</a>
+              </Link>
+            </Button>
+          </>
+        ) : (
+          <Flex flexDirection='row' justifyContent='space-between'>
+            <Flex alignItems='center' mr={4}>
+              {displayName}
+            </Flex>
+            <Button type='button' variantColor='white' variant='outline' onClick={handleLogout}>
+              Logout
+            </Button>
+          </Flex>
+        )}
+      </Box>
     </Flex>
   )
 }
