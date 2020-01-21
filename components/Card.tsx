@@ -1,39 +1,12 @@
-import styled from '@emotion/styled'
+import { Box, Flex, Heading, Text } from '@chakra-ui/core'
 import Link from 'next/link'
 import React from 'react'
-
-const CardStyles = styled.div`
-  width: 250px;
-  height: 250px;
-  overflow-y: scroll;
-  border-radius: 3px;
-  box-shadow: 0 15px 25px 0 grey;
-  margin: 8px;
-  padding: 8px;
-  text-align: center;
-  cursor: pointer;
-
-  .name {
-    font-weight: bold;
-  }
-
-  .type {
-    font-style: italic;
-  }
-
-  .breaks-fast {
-    text-transform: upperacse;
-  }
-
-  .description {
-  }
-`
 
 export interface IEntry {
   id: string
   name: string
   type: string
-  breaks: string
+  breaksFast: string
   description: string
   sources?: string[] | string
 }
@@ -43,17 +16,41 @@ export interface IProps {
 }
 
 const Card: React.FC<IProps> = ({ entry }) => {
+  const color = entry.breaksFast ? 'red.500' : 'green.500'
+
   return (
     <Link href='/product/[id]' as={`/product/${entry.id}`}>
-      <CardStyles key={entry.id}>
-        <h3 className='name'>{entry.name}</h3>
-        <p className='type'>Type: {entry.type}</p>
-        <p>
+      <Flex
+        flexDirection='column'
+        textAlign='center'
+        w='250px'
+        h='250px'
+        overflowY='hidden'
+        borderWidth='6.5px 0px 0px 0px'
+        borderColor={color}
+        borderRadius={6}
+        borderStyle='solid'
+        boxShadow=' 8px 10px 20px 0px rgba(46, 61, 73, 0.15)'
+        m={8}
+        p={8}
+        cursor='pointer'
+        lineHeight='1.5rem'
+        // backgroundColor={color}
+      >
+        <Heading as='h2' fontSize='1.5rem' textAlign='center' mb={4}>
+          {entry.name}
+        </Heading>
+        <Text fontStyle='italic'>{entry.type}</Text>
+        <Text>
           Breaks fast:
-          <span className='breaks-fast'> {entry.breaks}</span>
-        </p>
-        <p>Description: {entry.description}</p>
-      </CardStyles>
+          <Box as='span' textTransform='capitalize' fontWeight='bold'>
+            {' '}
+            {entry.breaksFast ? 'Yes' : 'No'}
+          </Box>
+        </Text>
+        {/* <Text>Description:</Text>
+        <Text>{entry.description}</Text> */}
+      </Flex>
     </Link>
   )
 }
