@@ -1,4 +1,4 @@
-# Does it breakl a fast
+# Does it breaks a fast
 
 Simple app that checks whether some kind of food breaks a fast.
 
