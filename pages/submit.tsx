@@ -96,7 +96,7 @@ const Submit: NextPage<Props> = () => {
         duration: 5000,
         isClosable: true,
       })
-      // e.target.reset()
+      e.target.reset()
     }
   }
 
