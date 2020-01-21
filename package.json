@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "next",
-    "build": "next build",
     "start": "next start",
+    "build": "next build",
     "export": "next export",
-    "deploy": "now",
-    "prettier": "prettier --write \"**/*.{html,js,jsx,ts,tsx,json,md,yml}\""
+    "prettier": "prettier --write \"**/*.{html,js,jsx,ts,tsx,json,md,yml}\"",
+    "deploy:now": "now --prod",
+    "deploy:netlify": "netlify deploy --dir=./public -p -m \"$(git log -1 --pretty=%B)\""
   },
   "lint-staged": {
     "*.{html,js,json,md,yml}": [
@@ -38,6 +39,7 @@
     "dotenv": "^8.2.0",
     "husky": "^3.1.0",
     "lint-staged": "^9.5.0",
+    "netlify-cli": "^2.30.0",
     "prettier": "^1.19.1",
     "typescript": "3.5.2"
   },
