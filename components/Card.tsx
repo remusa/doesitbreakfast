@@ -22,9 +22,10 @@ const Card: React.FC<IProps> = ({ entry }) => {
       <Flex
         flexDirection='column'
         textAlign='center'
-        w='250px'
+        w='225px'
         h='250px'
         overflowY='hidden'
+        // backgroundColor={color}
         borderWidth='6.5px 0px 0px 0px'
         borderColor={entry.breaksFast ? 'red.500' : 'green.500'}
         borderRadius={6}
@@ -34,21 +35,11 @@ const Card: React.FC<IProps> = ({ entry }) => {
         p={8}
         cursor='pointer'
         lineHeight='1.5rem'
-        // backgroundColor={color}
       >
         <Heading as='h2' fontSize='1.5rem' textAlign='center' mb={4}>
           {entry.name}
         </Heading>
-        <Text fontStyle='italic'>{entry.type}</Text>
-        <Text>
-          Breaks fast:
-          <Box as='span' textTransform='capitalize' fontWeight='bold'>
-            {' '}
-            {entry.breaksFast ? 'Yes' : 'No'}
-          </Box>
-        </Text>
-        <Text>Description: {entry.description}</Text>
-        <Flex justify='center' mt={4}>
+        <Flex justify='center'>
           <Image
             size='48px'
             objectFit='cover'
@@ -57,6 +48,15 @@ const Card: React.FC<IProps> = ({ entry }) => {
             alt={`${entry.name} image`}
           />
         </Flex>
+        <Text fontStyle='italic'>{entry.type}</Text>
+        <Text>
+          Breaks fast:
+          <Box as='span' textTransform='capitalize' fontWeight='bold'>
+            {' '}
+            {entry.breaksFast ? 'Yes' : 'No'}
+          </Box>
+        </Text>
+        {/* <Text>Description: {entry.description}</Text> */}
       </Flex>
     </Link>
   )
