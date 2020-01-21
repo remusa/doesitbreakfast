@@ -1,26 +1,16 @@
-import { Button, FormControl, FormLabel, Heading, Input, Select } from '@chakra-ui/core'
-import styled from '@emotion/styled'
+import { Button, Flex, FormControl, FormLabel, Heading, Input, Select } from '@chakra-ui/core'
 import 'isomorphic-fetch'
 import { NextPage, NextPageContext } from 'next'
 import { useEffect, useState } from 'react'
 import Card, { IEntry } from '../components/Card'
 import Layout from '../components/Layout'
-import { firestore } from '../lib/firebase'
+import { firestore } from '../utils/firebase'
 
-const CardContainer = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-items: center;
-
-  margin-top: 16px;
-`
-
-interface IProps {
+interface Props {
   entries: IEntry[]
 }
 
-const Index: NextPage<IProps> = ({ entries }) => {
+const Index: NextPage<Props> = ({ entries }) => {
   const [search, setSearch] = useState('')
   const [selected, setSelected] = useState('All')
   const [filteredEntries, setFilteredEntries] = useState(entries)
@@ -57,13 +47,16 @@ const Index: NextPage<IProps> = ({ entries }) => {
 
   return (
     <Layout>
-      <Heading as='h1'>Does it break a fast?</Heading>
+      <Heading as='h1' mb={4}>
+        Does it break a fast?
+      </Heading>
 
       <form>
-        <FormControl>
-          <FormLabel htmlFor='search'>Search: </FormLabel>
+        <FormControl textAlign='center' mb={4}>
+          <FormLabel htmlFor='search'>Search</FormLabel>
           <Input
             name='search'
+            type='search'
             variant='flushed'
             placeholder='Product name, type, etc.'
             value={search}
@@ -71,8 +64,8 @@ const Index: NextPage<IProps> = ({ entries }) => {
           />
         </FormControl>
 
-        <FormControl>
-          <FormLabel htmlFor='type'>Type: </FormLabel>
+        <FormControl textAlign='center'>
+          <FormLabel htmlFor='type'>Type</FormLabel>
           <Select name='type' variant='flushed' value={selected} onChange={handleSelect}>
             <option value='All'>All</option>
             <option value='Common Drinks'>Common Drinks</option>
@@ -83,16 +76,18 @@ const Index: NextPage<IProps> = ({ entries }) => {
           </Select>
         </FormControl>
 
-        <Button type='button' variantColor='pink' variant='outline' onClick={handleClear}>
-          Clear
-        </Button>
+        <Flex justifyContent='center' mt={4}>
+          <Button type='button' variantColor='pink' variant='ghost' onClick={handleClear}>
+            Clear
+          </Button>
+        </Flex>
       </form>
 
-      <CardContainer>
+      <Flex flexDirection='row' justifyContent='center' alignItems='center' mt={8}>
         {filteredEntries.map(entry => (
           <Card entry={entry} key={entry.id} />
         ))}
-      </CardContainer>
+      </Flex>
     </Layout>
   )
 }
@@ -101,11 +96,12 @@ interface Context extends NextPageContext {}
 
 Index.getInitialProps = async (ctx: Context) => {
   const entries = []
-
   const snapshot = await firestore.collection('entries').get()
-
   snapshot.forEach(doc => {
-    entries.push({ ...doc.data(), id: doc.id })
+    const docData = doc.data()
+    if (docData.approved) {
+      entries.push({ ...docData, id: doc.id })
+    }
   })
   return { entries }
 }
