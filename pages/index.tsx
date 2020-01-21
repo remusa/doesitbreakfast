@@ -114,6 +114,7 @@ const Index: NextPage<Props> = ({ entries }) => {
 
       <Flex
         flexDirection='row'
+        wrap='wrap'
         justifyContent='center'
         alignItems='center'
         mt={8}
