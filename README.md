@@ -1,32 +1,25 @@
-# TypeScript & Styled Components Next.js example
+# Does it breaks a fast
 
-This is a really simple project that show the usage of Next.js with TypeScript and Styled Components.
+Simple app that checks whether some kind of food breaks a fast.
 
-## Deploy your own
+## Tech + tools
 
-Deploy the example using [ZEIT Now](https://zeit.co/now):
+- React
+- Next.js
+- TypeScript
+- ESlint + Prettier
+- Emotion + Chakra-UI
+- Formik + yup
+- Jest + React Testing Library
+- Now.sh
+- Github Actions for CI/CD
 
-[![Deploy with ZEIT Now](https://zeit.co/button)](https://zeit.co/new/project?template=https://github.com/zeit/next.js/tree/canary/examples/with-typescript-styled-components)
+## Develop
 
-## How to use it?
-
-### Using `create-next-app`
-
-Execute [`create-next-app`](https://github.com/zeit/next.js/tree/canary/packages/create-next-app) with [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) or [npx](https://github.com/zkat/npx#readme) to bootstrap the example:
-
-```bash
-npx create-next-app --example with-typescript-styled-components with-typescript-app
-# or
-yarn create next-app --example with-typescript-styled-components with-typescript-app
-```
-
-### Download manually
-
-Download the example:
+Clone the repository:
 
 ```bash
-curl https://codeload.github.com/zeit/next.js/tar.gz/canary | tar -xz --strip=2 next.js-canary/examples/with-typescript-styled-components
-cd with-typescript-styled-components
+git clone https://github.com/remusa/doesitbreakfast.git
 ```
 
 Install it and run:
@@ -43,11 +36,6 @@ Deploy it to the cloud with [now](https://zeit.co/now) ([download](https://zeit.
 
 ```bash
 now
+# or deploy to production
+now --prod
 ```
-
-## The idea behind the example
-
-This is an amalgamation of the 2 existing examples:
-
-- [with-typescript](https://github.com/zeit/next.js/tree/canary/examples/with-typescript)
-- [with-styled-components](https://github.com/zeit/next.js/tree/canary/examples/with-styled-components)
