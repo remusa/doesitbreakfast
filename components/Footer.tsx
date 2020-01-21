@@ -13,7 +13,7 @@ const Footer: React.FC<Props> = () => {
       justifyContent='space-between'
       align-items='center'
     >
-      <Flex w={150} justify='space-between'>
+      <Flex w={150} justify='space-between' flexShrink={0}>
         <Text>Built with </Text>
         <Text color='error'> ❤ </Text>
         <Text>by </Text>

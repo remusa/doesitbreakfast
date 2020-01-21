@@ -1,4 +1,11 @@
-import { Box, Button, Flex, Heading, Text, useDisclosure } from '@chakra-ui/core'
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/core'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { useAuth } from '../context/Firebase/AuthContext'
@@ -52,15 +59,15 @@ const Header: React.FC<Props> = props => {
             <a>About</a>
           </Link>
         </Button>
-      </Flex>
 
-      {loggedIn && user && (
-        <Button variantColor='teal'>
-          <Link href='/submit'>
-            <a>Submit food</a>
-          </Link>
-        </Button>
-      )}
+        {loggedIn && user && (
+          <Button variantColor='teal'>
+            <Link href='/submit'>
+              <a>Submit food</a>
+            </Link>
+          </Button>
+        )}
+      </Flex>
 
       <Box>
         {!loggedIn && !user ? (
@@ -82,7 +89,12 @@ const Header: React.FC<Props> = props => {
             <Flex alignItems='center' mr={4}>
               {displayName}
             </Flex>
-            <Button type='button' variantColor='white' variant='outline' onClick={handleLogout}>
+            <Button
+              type='button'
+              variantColor='white'
+              variant='outline'
+              onClick={handleLogout}
+            >
               Logout
             </Button>
           </Flex>

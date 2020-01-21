@@ -18,14 +18,21 @@ interface Props {
 }
 
 const Product: NextPage<Props> = ({ entry }) => {
-  const breaksFast = entry.breaksFast ? 'Yes' : 'No'
-
   return (
     <Layout>
-      <Flex flexDirection='column'>
+      <Flex flexDirection='column' maxW={600} mt={8}>
         <Heading as='h1' textAlign='center'>
           {entry.name}
         </Heading>
+        <Flex justify='center' mt={4}>
+          <Image
+            size='48px'
+            objectFit='cover'
+            src={entry.image}
+            fallbackSrc='https://via.placeholder.com/150'
+            alt={`${entry.name} image`}
+          />
+        </Flex>
         <List as='ul'>
           <ListItem>
             <ListIcon icon='arrow-right' color='green.500' />
@@ -33,30 +40,24 @@ const Product: NextPage<Props> = ({ entry }) => {
           </ListItem>
           <ListItem>
             <ListIcon icon='arrow-right' color='green.500' />
-            Breaks fast: {breaksFast}
+            Breaks fast: {entry.breaksFast ? 'Yes' : 'No'}
           </ListItem>
           <ListItem>
             <ListIcon icon='arrow-right' color='green.500' />
             Description: {entry.description}
           </ListItem>
         </List>
-        <Flex justify='center' mt={4}>
-          <Image
-            size='100px'
-            objectFit='cover'
-            src={entry.image}
-            fallbackSrc='https://via.placeholder.com/150'
-            alt={`${entry.name} image`}
-          />
-        </Flex>
         {typeof entry.sources !== 'string' ? (
           <List as='ol'>
-            {entry.sources.map((e, index) => (
-              <ListItem key={index}>
-                <ListIcon icon='check-circle' color='green.500' />
-                {e}
-              </ListItem>
-            ))}
+            {entry.sources.map((src, index) => {
+              if (src === '' || !src) return
+              return (
+                <ListItem key={index}>
+                  <ListIcon icon='check-circle' color='green.500' />
+                  {src}
+                </ListItem>
+              )
+            })}
           </List>
         ) : (
           <Text>{entry.sources}</Text>
