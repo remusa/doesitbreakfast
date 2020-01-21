@@ -24,5 +24,5 @@
     "isolatedModules": true
   },
   "exclude": ["node_modules"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "lib/firebase.js"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "utils/firebase.ts"]
 }
