@@ -10,15 +10,15 @@ Simple app that checks whether some kind of food breaks a fast.
 
 ## Tech + tools
 
-- React
-- Next.js
-- TypeScript
-- ESlint + Prettier
-- Emotion + Chakra-UI
-- Formik + yup
-- Jest + React Testing Library
-- Now.sh
-- Github Actions for CI/CD
+* React
+* Next.js
+* TypeScript
+* ESlint + Prettier
+* Emotion + Chakra-UI
+* Formik + yup
+* Jest + React Testing Library
+* Now.sh
+* Github Actions for CI/CD
 
 ## Develop
 
