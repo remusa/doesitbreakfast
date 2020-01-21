@@ -1,34 +1,50 @@
+import { Flex, Heading, List, ListIcon, ListItem, Text } from '@chakra-ui/core'
 import { NextPage, NextPageContext } from 'next'
-import { useRouter } from 'next/dist/client/router'
 import React from 'react'
 import { IEntry } from '../../components/Card'
 import Layout from '../../components/Layout'
-import { firestore } from '../../lib/firebase'
+import { firestore } from '../../utils/firebase'
 
 interface Props {
   entry: IEntry
 }
 
 const Product: NextPage<Props> = ({ entry }) => {
-  const router = useRouter()
+  const breaksFast = entry.breaksFast ? 'Yes' : 'No'
 
   return (
     <Layout>
-      <h1>{entry.name}</h1>
-
-      <p>Type: {entry.type}</p>
-      <p>Breaks fast: {entry.breaks}</p>
-      <p>Description: {entry.description}</p>
-
-      {typeof entry.sources !== 'string' ? (
-        <ul>
-          {entry.sources.map((e, index) => (
-            <li key={index}>{e}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>{entry.sources}</p>
-      )}
+      <Flex flexDirection='column'>
+        <Heading as='h1' textAlign='center'>
+          {entry.name}
+        </Heading>
+        <List as='ul'>
+          <ListItem>
+            <ListIcon icon='arrow-right' color='green.500' />
+            Type: {entry.type}
+          </ListItem>
+          <ListItem>
+            <ListIcon icon='arrow-right' color='green.500' />
+            Breaks fast: {breaksFast}
+          </ListItem>
+          <ListItem>
+            <ListIcon icon='arrow-right' color='green.500' />
+            Description: {entry.description}
+          </ListItem>
+        </List>
+        {typeof entry.sources !== 'string' ? (
+          <List as='ol'>
+            {entry.sources.map((e, index) => (
+              <ListItem key={index}>
+                <ListIcon icon='check-circle' color='green.500' />
+                {e}
+              </ListItem>
+            ))}
+          </List>
+        ) : (
+          <Text>{entry.sources}</Text>
+        )}
+      </Flex>
     </Layout>
   )
 }
@@ -37,16 +53,13 @@ interface Context extends NextPageContext {}
 
 Product.getInitialProps = async (ctx: Context) => {
   const id = ctx.query.id
-
   const snapshot = await firestore
     .collection('entries')
     // @ts-ignore
     .doc(id)
     // .doc(`entries/${name}`)
     .get()
-
   const entry = snapshot.data()
-
   return { entry }
 }
 

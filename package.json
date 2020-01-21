@@ -26,7 +26,8 @@
     "next-offline": "^4.0.6",
     "react": "16.8.6",
     "react-dom": "16.8.6",
-    "react-hook-form": "^3.28.13"
+    "react-hook-form": "^3.28.13",
+    "yup": "^0.28.0"
   },
   "devDependencies": {
     "@babel/plugin-syntax-dynamic-import": "^7.7.4",

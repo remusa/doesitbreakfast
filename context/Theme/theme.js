@@ -4,8 +4,10 @@ import { theme } from '@chakra-ui/core'
 export const customTheme = {
   ...theme,
   fonts: {
-    headings: 'Barlow, system-ui, sans-serif',
-    body: 'Barlow, system-ui, sans-serif',
+    // headings: '"Barlow", system-ui, sans-serif',
+    headings: '"Barlow", sans-serif',
+    // body: '"Barlow", system-ui, sans-serif',
+    body: '"Barlow", sans-serif',
     mono: 'Menlo, monospace',
   },
   // colors: {

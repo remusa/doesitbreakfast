@@ -1,12 +1,14 @@
-import { Box, Heading, Text } from '@chakra-ui/core'
+import { Flex, Heading, Text } from '@chakra-ui/core'
 import { NextPage } from 'next'
 import Layout from '../components/Layout'
 
 const About: NextPage = () => {
   return (
     <Layout>
-      <Box>
-        <Heading as='h1'>About page</Heading>
+      <Flex maxW={800} flexDirection='column'>
+        <Heading as='h1' textAlign='center' mb={8}>
+          About page
+        </Heading>
         <Text>
           Consequatur illum maxime aliquam nam. Dolorem molestiae qui ad ut ut quisquam fugiat
           doloribus voluptatem. Fuga dignissimos nesciunt quasi non minus sed consequatur esse.
@@ -24,7 +26,7 @@ const About: NextPage = () => {
           praesentium voluptatem. Atque earum voluptatem unde omnis officia incidunt cum facere.
           Animi quibusdam aut consequuntur a consequatur.
         </Text>
-      </Box>
+      </Flex>
     </Layout>
   )
 }

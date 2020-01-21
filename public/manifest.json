@@ -1,7 +1,7 @@
 {
   "name": "Does it break a fast?",
   "short_name": "does-it-break-fast",
-  "description": "Nextjs using service worker via next-offline",
+  "description": "Check whether your favorite foods break your fast/keto diet!",
   "icons": [
     {
       "src": "/static/pwa.png",

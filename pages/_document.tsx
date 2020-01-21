@@ -34,9 +34,22 @@ export default class MyDocument extends Document {
         <Head>
           <link rel='manifest' href='/manifest.json' />
           <link
-            href='https://fonts.googleapis.com/css?family=Barlow'
+            href='https://fonts.googleapis.com/css?family=Barlow:400,700'
             rel='stylesheet'
-            key='google-font-barlow'
+          />
+          <link href='../public/Barlow-Regular.woff2' rel='font/woff2' />
+          <link href='./public/Barlow-Regular.woff2' rel='font/woff2' />
+          <link href='/public/Barlow-Regular.woff2' rel='font/woff2' />
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `
+                @font-face {
+                  font-family: 'Barlow';
+                  font-weight: 300;
+                  src: url('/static/Barlow-Regular.woff2') format('woff2');
+                }
+              `,
+            }}
           />
         </Head>
 
