@@ -13,7 +13,7 @@ const Footer: React.FC<Props> = () => {
       justifyContent='space-between'
       align-items='center'
     >
-      <p>Copyright © RMS 2019.</p>
+      <p>Copyright © RMS 2020.</p>
       {/* <Toggle isOn={theme === 'dark'} handleToggle={toggleTheme} /> */}
     </Flex>
   )
