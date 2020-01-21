@@ -30,8 +30,8 @@ jobs:
       # - name: Lint
       #   run: npm run lint
 
-      # - name: Prettify
-      #   run: npm run prettify
+      - name: Prettify
+        run: npm run prettier
 
       - name: Test
         run: npm run test --if-present

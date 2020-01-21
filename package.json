@@ -6,9 +6,9 @@
     "start": "next start",
     "build": "next build",
     "export": "next export",
-    "deploy:netlify": "now --prod",
+    "prettier": "prettier --write \"**/*.{html,js,jsx,ts,tsx,json,md,yml}\"",
     "deploy:now": "now --prod",
-    "prettier": "prettier --write \"**/*.{html,js,jsx,ts,tsx,json,md,yml}\""
+    "deploy:netlify": "netlify deploy --dir=./public -p -m \"$(git log -1 --pretty=%B)\""
   },
   "lint-staged": {
     "*.{html,js,json,md,yml}": [
