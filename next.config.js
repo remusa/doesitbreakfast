@@ -3,12 +3,11 @@
 // const firestore = Firebase.firestore
 // const fetch = require('isomorphic-unfetch');
 const withOffline = require('next-offline')
-const env = require('./.env')
 
 require('dotenv').config()
 
 const nextConfig = {
-  // env: env,
+  // env: require('./.env')nv,
   env: {
     API_KEY: process.env.API_KEY,
     AUTH_DOMAIN: process.env.AUTH_DOMAIN,
