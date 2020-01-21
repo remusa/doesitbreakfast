@@ -20,8 +20,12 @@ interface Props {
 }
 
 const AuthProvider: React.FC<Props> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(fireauth.currentUser ? fireauth.currentUser : null)
-  const [loggedIn, setIsLoggedIn] = useState<boolean>(fireauth.currentUser ? true : false)
+  const [user, setUser] = useState<User | null>(
+    fireauth.currentUser ? fireauth.currentUser : null
+  )
+  const [loggedIn, setIsLoggedIn] = useState<boolean>(
+    fireauth.currentUser ? true : false
+  )
   const router = useRouter()
   const toast = useToast()
 
@@ -38,7 +42,6 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
   }, [])
 
   const loginWithGoogle = async () => {
-    console.log(`LOGIN WITH GOOGLE`)
     try {
       await fireauth.signInWithPopup(googleProvider)
       toast({
@@ -53,7 +56,7 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
       console.log(`ERROR LOGGING IN WITH GOOGLE: ${e.message}`)
       toast({
         title: 'Error logging in with Google.',
-        description: `${e.message}`,
+        description: `${e.message}. You need to enable cookies to login with this option.`,
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -62,9 +65,11 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
   }
 
   const loginWithEmail = async (email: string, password: string) => {
-    const response = await fireauth.signInWithEmailAndPassword(email, password).catch(error => {
-      throw new Error(`${error.message} - ${error.code}`)
-    })
+    const response = await fireauth
+      .signInWithEmailAndPassword(email, password)
+      .catch(error => {
+        throw new Error(`${error.message} - ${error.code}`)
+      })
     if (response) {
       const user: User = fireauth.currentUser
       // const token = await user.getIdToken()
@@ -86,9 +91,11 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
   }
 
   const registerWithEmail = async (email: string, password: string) => {
-    const response = await fireauth.createUserWithEmailAndPassword(email, password).catch(error => {
-      throw new Error(`${error.message} - ${error.code}`)
-    })
+    const response = await fireauth
+      .createUserWithEmailAndPassword(email, password)
+      .catch(error => {
+        throw new Error(`${error.message} - ${error.code}`)
+      })
     if (response) {
       const user: User = fireauth.currentUser
       setUser(user)
@@ -121,7 +128,14 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, loggedIn, loginWithGoogle, loginWithEmail, registerWithEmail, logout }}
+      value={{
+        user,
+        loggedIn,
+        loginWithGoogle,
+        loginWithEmail,
+        registerWithEmail,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>
@@ -131,4 +145,3 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
 const useAuth = () => useContext(AuthContext)
 
 export { AuthProvider, useAuth }
-
