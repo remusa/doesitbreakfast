@@ -17,8 +17,6 @@ export interface IProps {
 }
 
 const Card: React.FC<IProps> = ({ entry }) => {
-  const color = entry.breaksFast ? 'red.500' : 'green.500'
-
   return (
     <Link href='/product/[id]' as={`/product/${entry.id}`}>
       <Flex
@@ -28,7 +26,7 @@ const Card: React.FC<IProps> = ({ entry }) => {
         h='250px'
         overflowY='hidden'
         borderWidth='6.5px 0px 0px 0px'
-        borderColor={color}
+        borderColor={entry.breaksFast ? 'red.500' : 'green.500'}
         borderRadius={6}
         borderStyle='solid'
         boxShadow=' 8px 10px 20px 0px rgba(46, 61, 73, 0.15)'
@@ -49,11 +47,10 @@ const Card: React.FC<IProps> = ({ entry }) => {
             {entry.breaksFast ? 'Yes' : 'No'}
           </Box>
         </Text>
-        {/* <Text>Description:</Text>
-        <Text>{entry.description}</Text> */}
-        <Flex justify='center'>
+        <Text>Description: {entry.description}</Text>
+        <Flex justify='center' mt={4}>
           <Image
-            size='100px'
+            size='48px'
             objectFit='cover'
             src={entry.image}
             fallbackSrc='https://via.placeholder.com/150'

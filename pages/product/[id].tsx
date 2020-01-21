@@ -18,8 +18,6 @@ interface Props {
 }
 
 const Product: NextPage<Props> = ({ entry }) => {
-  const breaksFast = entry.breaksFast ? 'Yes' : 'No'
-
   return (
     <Layout>
       <Flex flexDirection='column'>
@@ -33,7 +31,7 @@ const Product: NextPage<Props> = ({ entry }) => {
           </ListItem>
           <ListItem>
             <ListIcon icon='arrow-right' color='green.500' />
-            Breaks fast: {breaksFast}
+            Breaks fast: {entry.breaksFast ? 'Yes' : 'No'}
           </ListItem>
           <ListItem>
             <ListIcon icon='arrow-right' color='green.500' />
@@ -42,7 +40,7 @@ const Product: NextPage<Props> = ({ entry }) => {
         </List>
         <Flex justify='center' mt={4}>
           <Image
-            size='100px'
+            size='48px'
             objectFit='cover'
             src={entry.image}
             fallbackSrc='https://via.placeholder.com/150'
