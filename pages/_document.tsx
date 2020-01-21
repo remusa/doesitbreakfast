@@ -38,6 +38,8 @@ export default class MyDocument extends Document {
             rel='stylesheet'
           />
           <link href='../public/Barlow-Regular.woff2' rel='font/woff2' />
+          <link href='./public/Barlow-Regular.woff2' rel='font/woff2' />
+          <link href='/public/Barlow-Regular.woff2' rel='font/woff2' />
           <style
             dangerouslySetInnerHTML={{
               __html: `
