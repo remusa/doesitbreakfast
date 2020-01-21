@@ -1,7 +1,7 @@
 import { Button, Flex, FormControl, FormLabel, Heading, Input, Select } from '@chakra-ui/core'
 import 'isomorphic-fetch'
 import { NextPage, NextPageContext } from 'next'
-import { useEffect, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import Card, { IEntry } from '../components/Card'
 import Layout from '../components/Layout'
 import { firestore } from '../utils/firebase'
@@ -17,15 +17,15 @@ const Index: NextPage<Props> = ({ entries }) => {
 
   useEffect(() => {
     let filtered = entries
-
     if (selected !== 'All') {
       filtered = entries.filter(
         entry =>
           entry.name.toLowerCase().includes(search.toLowerCase()) &&
           entry.type.toLowerCase() === selected.toLowerCase()
       )
+    } else {
+      filtered = entries.filter(entry => entry.name.toLowerCase().includes(search.toLowerCase()))
     }
-
     setFilteredEntries(filtered)
   }, [search, selected])
 
@@ -37,6 +37,10 @@ const Index: NextPage<Props> = ({ entries }) => {
   const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     e.preventDefault()
     setSelected(e.target.value)
+  }
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
   }
 
   const handleClear = (e: React.MouseEvent<HTMLInputElement & HTMLSelectElement>) => {
@@ -51,12 +55,11 @@ const Index: NextPage<Props> = ({ entries }) => {
         Does it break a fast?
       </Heading>
 
-      <form>
+      <form onSubmit={handleSubmit}>
         <FormControl textAlign='center' mb={4}>
           <FormLabel htmlFor='search'>Search</FormLabel>
           <Input
             name='search'
-            type='search'
             variant='flushed'
             placeholder='Product name, type, etc.'
             value={search}
