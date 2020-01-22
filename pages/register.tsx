@@ -1,4 +1,12 @@
-import { Button, Flex, FormControl, FormLabel, Heading, Input, useToast } from '@chakra-ui/core'
+import {
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
+  useToast,
+} from '@chakra-ui/core'
 import { NextPage } from 'next'
 import React from 'react'
 import useForm from 'react-hook-form'
@@ -15,14 +23,14 @@ import {
 import { IUser } from './login'
 
 const validationSchema = yup.object().shape({
-  username: usernameValidation,
+  displayName: usernameValidation,
   email: emailValidation,
   password: passwordValidation,
   confirmPassword: confirmPasswordValidation,
 })
 
 interface IRUser extends IUser {
-  username: string
+  displayName: string
   confirmPassword: string
 }
 
@@ -34,17 +42,15 @@ const Register: NextPage<Props> = () => {
     register,
     handleSubmit,
     errors,
-    watch,
-    getValues,
-    formState: { isSubmitting, dirty, isValid },
+    formState: { isSubmitting },
   } = useForm<IRUser>({
     validationSchema,
   })
   const toast = useToast()
 
-  const onSubmit = async ({ email, username, password, confirmPassword }: IRUser) => {
+  const onSubmit = async ({ email, displayName, password }: IRUser) => {
     try {
-      registerWithEmail(email, password)
+      registerWithEmail(email, password, displayName)
     } catch (e) {
       toast({
         title: 'Error creating new account.',
@@ -67,16 +73,18 @@ const Register: NextPage<Props> = () => {
               </Heading>
 
               <FormControl>
-                <FormLabel htmlFor='email'>Username</FormLabel>
+                <FormLabel htmlFor='displayName'>Username</FormLabel>
                 <Input
                   type='text'
-                  name='username'
+                  name='displayName'
                   className='input'
                   placeholder='Username'
                   ref={register}
                   variant='flushed'
                 />
-                {errors.username && <ErrorMessage message={errors.username.message} />}
+                {errors.displayName && (
+                  <ErrorMessage message={errors.displayName.message} />
+                )}
               </FormControl>
 
               <FormControl>
@@ -89,7 +97,9 @@ const Register: NextPage<Props> = () => {
                   ref={register}
                   variant='flushed'
                 />
-                {errors.email && <ErrorMessage message={errors.email.message} />}
+                {errors.email && (
+                  <ErrorMessage message={errors.email.message} />
+                )}
               </FormControl>
 
               <FormControl>
@@ -102,11 +112,15 @@ const Register: NextPage<Props> = () => {
                   ref={register}
                   variant='flushed'
                 />
-                {errors.password && <ErrorMessage message={errors.password.message} />}
+                {errors.password && (
+                  <ErrorMessage message={errors.password.message} />
+                )}
               </FormControl>
 
               <FormControl>
-                <FormLabel htmlFor='confirmPassword'>Confirm Password</FormLabel>
+                <FormLabel htmlFor='confirmPassword'>
+                  Confirm Password
+                </FormLabel>
                 <Input
                   type='password'
                   name='confirmPassword'
