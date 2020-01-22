@@ -1,41 +1,24 @@
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
-// import {
-//   API_KEY,
-//   APP_ID,
-//   AUTH_DOMAIN,
-//   DATABASE_URL,
-//   MESSAGING_SENDER_ID,
-//   PROJECT_ID,
-//   STORAGE_BUCKET,
-// } from '../.env.js'
+import 'firebase/storage'
+import firebaseConfig from './config.json'
 
-// const firebaseConfig = {
-//   apiKey: API_KEY,
-//   authDomain: AUTH_DOMAIN,
-//   databaseURL: DATABASE_URL,
-//   projectId: PROJECT_ID,
-//   storageBucket: STORAGE_BUCKET,
-//   messagingSenderId: MESSAGING_SENDER_ID,
-//   appId: APP_ID,
-// }
+const firebaseApp = !firebase.apps.length
+  ? firebase.initializeApp(firebaseConfig)
+  : firebase.app()
 
-const firebaseConfig = {
-  apiKey: process.env.API_KEY,
-  authDomain: process.env.AUTH_DOMAIN,
-  databaseURL: process.env.DATABASE_URL,
-  projectId: process.env.PROJECT_ID,
-  storageBucket: process.env.STORAGE_BUCKET,
-  messagingSenderId: process.env.MESSAGING_SENDER_ID,
-  appId: process.env.APP_ID,
-}
+export const firestore = firebaseApp.firestore()
+export const storage = firebaseApp.storage()
 
-const Firebase = !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
-
-export const firestore = Firebase.firestore()
-
-export const fireauth: firebase.auth.Auth = Firebase.auth()
+export const auth: firebase.auth.Auth = firebaseApp.auth()
 export const googleProvider = new firebase.auth.GoogleAuthProvider()
 
-export default Firebase
+export const signInWithGoogle = () => auth.signInWithPopup(googleProvider)
+export const signInWithEmailAndPassword = (email, password) =>
+  auth.signInWithEmailAndPassword(email, password)
+export const createUserWithEmailAndPassword = (email, password) =>
+  auth.createUserWithEmailAndPassword(email, password)
+export const signOut = () => auth.signOut()
+
+export default firebaseApp
