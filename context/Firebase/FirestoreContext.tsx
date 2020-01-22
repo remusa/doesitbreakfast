@@ -22,22 +22,12 @@ const FirestoreProvider: React.FC<Props> = ({ children }) => {
         const snapshot = await firestore
           .collection('users')
           .doc(user.uid)
-          .collection('posts')
+          .collection('entries')
           .get()
         snapshot.forEach(doc => {
           const newEntry = { ...doc.data(), id: doc }
           entries.push(newEntry)
         })
-        // snapshot = await firestore
-        //   .collection('users')
-        //   .doc(user.uid)
-        //   .collection('posts')
-        //   .onSnapshot(docs => {
-        //     docs.forEach(doc => {
-        //       const newEntry = { ...doc.data(), id: doc }
-        //       entries.push(newEntry)
-        //     })
-        //   })
         setData(entries)
         console.log('entries', entries)
       }
@@ -47,7 +37,11 @@ const FirestoreProvider: React.FC<Props> = ({ children }) => {
     // return () => snapshot()
   }, [])
 
-  return <FirestoreContext.Provider value={data}>{children}</FirestoreContext.Provider>
+  return (
+    <FirestoreContext.Provider value={data}>
+      {children}
+    </FirestoreContext.Provider>
+  )
 }
 
 const useFirestore = () => useContext(FirestoreContext)
