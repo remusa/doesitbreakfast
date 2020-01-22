@@ -40,8 +40,8 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
     const unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
         const userDocument = await createUserProfileDocument(userAuth)
-        userDocument.onSnapshot(snapshot => {
-          setUser({ uid: snapshot.id, user: snapshot.data() })
+        userDocument.onSnapshot(doc => {
+          setUser({ uid: doc.id, user: doc.data() })
         })
       } else {
         setUser(null)
