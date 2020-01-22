@@ -25,7 +25,7 @@ const Header: React.FC<Props> = props => {
   const { user, loggedIn, logout } = useAuth()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const displayName = user ? user.displayName || user.email : ''
+  const displayName = user ? user.user.displayName || user.user.email : ''
 
   const handleLogout = () => {
     logout()
