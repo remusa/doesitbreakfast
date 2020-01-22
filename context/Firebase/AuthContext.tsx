@@ -15,7 +15,11 @@ interface IContext {
   loggedIn: boolean
   loginWithGoogle: () => void
   loginWithEmail: (email: string, password: string) => void
-  registerWithEmail: (email: string, password: string) => void
+  registerWithEmail: (
+    email: string,
+    password: string,
+    displayName: string
+  ) => void
   logout: () => void
 }
 
@@ -67,7 +71,9 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
       })
       router.push('/')
     } catch (e) {
-      console.log(`ERROR LOGGING IN WITH GOOGLE: ${e.message}`)
+      console.error(
+        `loginWithGoogle | ERROR LOGGING IN WITH GOOGLE: ${e.message}`
+      )
       showToast({
         title: 'Error logging in with Google.',
         description: `${e.message}. You may need to enable cookies to login with this option.`,
@@ -79,14 +85,15 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
   const loginWithEmail = async (email: string, password: string) => {
     const response = await signInWithEmailAndPassword(email, password).catch(
       error => {
+        console.error(`loginWithEmail | ${error.message} - ${error.code}`)
         showToast({
           title: 'Error logging in.',
           description: `${error.message}`,
           status: 'error',
         })
-        throw new Error(`${error.message} - ${error.code}`)
       }
     )
+
     if (response) {
       const user: User = auth.currentUser
       setUser(user)
@@ -100,18 +107,23 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
     }
   }
 
-  const registerWithEmail = async (email: string, password: string) => {
+  const registerWithEmail = async (
+    email: string,
+    password: string,
+    displayName: string
+  ) => {
     const response = await createUserWithEmailAndPassword(
       email,
       password
     ).catch(error => {
+      console.error(`registerWithEmail | ${error.message} - ${error.code}`)
       showToast({
         title: 'Error signing up.',
         description: `${error.message}`,
         status: 'error',
       })
-      throw new Error(`${error.message} - ${error.code}`)
     })
+
     if (response) {
       const user: User = auth.currentUser
       setUser(user)
