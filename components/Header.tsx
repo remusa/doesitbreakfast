@@ -1,31 +1,18 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Text,
-  useDisclosure,
-} from '@chakra-ui/core'
+import { Box, Button, Flex, Heading, useDisclosure } from '@chakra-ui/core'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { useAuth } from '../context/Firebase/AuthContext'
-
-const MenuItems = ({ children }) => {
-  return (
-    <Text mt={{ base: 4, md: 0 }} mr={6} display='block'>
-      {children}
-    </Text>
-  )
-}
 
 interface Props {}
 
 const Header: React.FC<Props> = props => {
   const [show, setShow] = useState<boolean>(false)
-  const { user, loggedIn, logout } = useAuth()
+  const { user, logout } = useAuth()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const displayName = user ? user.displayName || user.email : ''
+  const displayName = user ? user.user.displayName || user.user.email : ''
+  const isAdmin = user ? user.user.isAdmin : false
+  const uid = user ? user.uid : ""
 
   const handleLogout = () => {
     logout()
@@ -60,7 +47,7 @@ const Header: React.FC<Props> = props => {
           </Link>
         </Button>
 
-        {loggedIn && user && (
+        {user && isAdmin && (
           <Button variantColor='teal'>
             <Link href='/submit'>
               <a>Submit food</a>
@@ -70,7 +57,7 @@ const Header: React.FC<Props> = props => {
       </Flex>
 
       <Box>
-        {!loggedIn && !user ? (
+        {!user ? (
           <>
             <Button variantColor='teal'>
               <Link href='/login'>
@@ -87,10 +74,11 @@ const Header: React.FC<Props> = props => {
         ) : (
           <Flex flexDirection='row' justifyContent='space-between'>
             <Button type='button' variantColor='white' variant='outline'>
-              <Link href='/'>
+              <Link href='/profile/[uid]' as={`/profile/${uid}`}>
                 <a>{displayName}</a>
               </Link>
             </Button>
+
             <Button variantColor='teal' onClick={handleLogout}>
               Logout
             </Button>

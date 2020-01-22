@@ -24,6 +24,7 @@ const Product: NextPage<Props> = ({ entry }) => {
         <Heading as='h1' textAlign='center'>
           {entry.name}
         </Heading>
+
         <Flex justify='center' mt={4}>
           <Image
             size='48px'
@@ -33,6 +34,7 @@ const Product: NextPage<Props> = ({ entry }) => {
             alt={`${entry.name} image`}
           />
         </Flex>
+
         <List as='ul'>
           <ListItem>
             <ListIcon icon='arrow-right' color='green.500' />
@@ -47,6 +49,7 @@ const Product: NextPage<Props> = ({ entry }) => {
             Description: {entry.description}
           </ListItem>
         </List>
+
         {typeof entry.sources !== 'string' ? (
           <List as='ol'>
             {entry.sources.map((src, index) => {

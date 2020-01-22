@@ -2,7 +2,9 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import { firestore } from '../../utils/firebase'
 import { useAuth } from './AuthContext'
 
-interface IContext {}
+interface IContext {
+  data: any
+}
 
 const FirestoreContext = createContext({} as IContext)
 
@@ -12,42 +14,36 @@ interface Props {
 
 const FirestoreProvider: React.FC<Props> = ({ children }) => {
   const [data, setData] = useState<any | null>(null)
-  const { user, loggedIn } = useAuth()
+  const { user } = useAuth()
 
   useEffect(() => {
-    // let snapshot = () => console.log('No unsubscribe')
-    const getData = async () => {
-      if (user && loggedIn) {
-        const entries = []
-        const snapshot = await firestore
-          .collection('users')
-          .doc(user.uid)
-          .collection('posts')
-          .get()
-        snapshot.forEach(doc => {
-          const newEntry = { ...doc.data(), id: doc }
-          entries.push(newEntry)
-        })
-        // snapshot = await firestore
-        //   .collection('users')
-        //   .doc(user.uid)
-        //   .collection('posts')
-        //   .onSnapshot(docs => {
-        //     docs.forEach(doc => {
-        //       const newEntry = { ...doc.data(), id: doc }
-        //       entries.push(newEntry)
-        //     })
-        //   })
-        setData(entries)
-        console.log('entries', entries)
-      }
+    if (!user) {
+      console.log('FirestoreContext | no user')
+      return
     }
 
-    getData()
-    // return () => snapshot()
+    const unsubscribeFromFirestore = firestore
+      .collection('users')
+      .doc(user.uid)
+      .collection('entries')
+      .onSnapshot(snapshot => {
+        const entries = []
+        snapshot.forEach(doc => {
+          const newEntry = { id: doc.id, ...doc.data() }
+          entries.push(newEntry)
+        })
+        setData(entries)
+        console.log('entries', entries)
+      })
+
+    return () => unsubscribeFromFirestore()
   }, [])
 
-  return <FirestoreContext.Provider value={data}>{children}</FirestoreContext.Provider>
+  return (
+    <FirestoreContext.Provider value={{ data }}>
+      {children}
+    </FirestoreContext.Provider>
+  )
 }
 
 const useFirestore = () => useContext(FirestoreContext)

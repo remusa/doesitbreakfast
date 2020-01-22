@@ -30,11 +30,11 @@ const Submit: NextPage<Props> = () => {
     formState: { isSubmitting },
   } = useForm()
   const toast = useToast()
-  const { user, loggedIn } = useAuth()
+  const { user } = useAuth()
   const router = useRouter()
   // const fileInput = useRef(null)
 
-  if ((!user || !loggedIn) && typeof window !== 'undefined') {
+  if (!user && typeof window !== 'undefined') {
     router.push('/')
   }
 
@@ -59,6 +59,17 @@ const Submit: NextPage<Props> = () => {
     //     .catch(e => console.log(`Error uploading file: ${e.message}`))
     // }
     // console.log('imageURL', imageURL)
+
+    if (!user || !user.isAdmin) {
+      toast({
+        title: 'Failed submitting new entry!',
+        description: "Sorry! You don't have enough permissions.",
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      })
+      return
+    }
 
     const newEntry = {
       ...data,

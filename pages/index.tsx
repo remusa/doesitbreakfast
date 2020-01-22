@@ -10,7 +10,8 @@ import {
 import 'isomorphic-fetch'
 import { NextPage, NextPageContext } from 'next'
 import { FormEvent, useEffect, useState } from 'react'
-import Card, { IEntry } from '../components/Card'
+import { IEntry } from '../components/Card'
+import CardList from '../components/CardList'
 import Layout from '../components/Layout'
 import { firestore } from '../utils/firebase'
 
@@ -112,17 +113,7 @@ const Index: NextPage<Props> = ({ entries }) => {
         </Flex>
       </form>
 
-      <Flex
-        flexDirection='row'
-        wrap='wrap'
-        justifyContent='center'
-        alignItems='center'
-        mt={8}
-      >
-        {filteredEntries.map(entry => (
-          <Card entry={entry} key={entry.id} />
-        ))}
-      </Flex>
+      <CardList entries={filteredEntries} />
     </Layout>
   )
 }
@@ -135,7 +126,7 @@ Index.getInitialProps = async (ctx: Context) => {
   snapshot.forEach(doc => {
     const docData = doc.data()
     if (docData.approved) {
-      entries.push({ ...docData, id: doc.id })
+      entries.push({ id: doc.id, ...doc.data() })
     }
   })
   return { entries }
