@@ -1,6 +1,6 @@
 import { useToast } from '@chakra-ui/core'
 import { User } from 'firebase'
-import { useRouter } from 'next/dist/client/router'
+import { useRouter } from 'next/router'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import {
   auth,
@@ -11,7 +11,7 @@ import {
   signOut,
 } from '../../utils/firebase'
 
-type TUser = firebase.firestore.DocumentData & { uid: string }
+export type TUser = firebase.firestore.DocumentData & { uid: string }
 
 interface IContext {
   user: TUser
