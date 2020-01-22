@@ -17,8 +17,10 @@ export interface IProps {
 }
 
 const Card: React.FC<IProps> = ({ entry }) => {
+  const entryId = entry.id // .replace(/ /g, '-')
+
   return (
-    <Link href='/product/[id]' as={`/product/${entry.id}`}>
+    <Link href='/product/[id]' as={`/product/${entryId}`}>
       <Flex
         flexDirection='column'
         textAlign='center'
