@@ -13,15 +13,20 @@ import {
 import { NextPage } from 'next'
 import React, { useRef, useState } from 'react'
 import CardList from '../../components/CardList'
+import ErrorMessage from '../../components/ErrorMessage'
 import Layout from '../../components/Layout'
 import Loading from '../../components/Loading'
 import { useAuth } from '../../context/Firebase/AuthContext'
 import { useFirestore } from '../../context/Firebase/FirestoreContext'
 import { firestore, storage } from '../../utils/firebase'
 
+const FILE_SIZE_LIMIT = 1000000 // 1mb
+
 const Profile: NextPage = () => {
   const toast = useToast()
   const [newDisplayName, setNewDisplayName] = useState('')
+  const [errorDisplayName, setErrorDisplayName] = useState('')
+  const [errorImage, setErrorImage] = useState('')
   const { user } = useAuth()
   const { data } = useFirestore()
   const imageInput = useRef(null)
@@ -37,12 +42,21 @@ const Profile: NextPage = () => {
     e.preventDefault()
     setNewDisplayName('')
     imageInput.current.value = null
+    setErrorDisplayName('')
+    setErrorImage('')
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const userRef = firestore.doc(`users/${uid}`)
+
+    if (newDisplayName && !newDisplayName.match(/[a-zA-Z][\w]{2,24}/i)) {
+      setErrorDisplayName(
+        'Username must start with a letter and be between 3-25 characters.'
+      )
+      return
+    }
 
     if (newDisplayName) {
       const response = userRef
@@ -60,6 +74,7 @@ const Profile: NextPage = () => {
 
       if (response) {
         setNewDisplayName('')
+        setErrorDisplayName('')
         toast({
           title: 'Successfully updated profile.',
           description: 'Username changed.',
@@ -72,6 +87,11 @@ const Profile: NextPage = () => {
 
     if (imageInput && imageInput.current && imageInput.current.files[0]) {
       const image = imageInput.current.files[0]
+
+      if (image.size > FILE_SIZE_LIMIT) {
+        setErrorImage(`File size must be max. ${FILE_SIZE_LIMIT} mb.`)
+        return
+      }
 
       if (image) {
         const response = storage
@@ -95,6 +115,7 @@ const Profile: NextPage = () => {
 
         if (response) {
           imageInput.current.value = null
+          setErrorImage('')
           toast({
             title: 'Successfully updated profile.',
             description: 'Profile picture changed.',
@@ -112,7 +133,7 @@ const Profile: NextPage = () => {
       <Flex
         flexDirection='column'
         justify='flexStart'
-        maxW={600}
+        maxW={400}
         h='100%'
         mt={8}
         borderRadius={8}
@@ -150,9 +171,7 @@ const Profile: NextPage = () => {
                 value={newDisplayName}
                 onChange={e => setNewDisplayName(e.target.value)}
               />
-              {/* {errors.displayName && (
-                <ErrorMessage message={errors.displayName.message} />
-              )} */}
+              {errorDisplayName && <ErrorMessage message={errorDisplayName} />}
             </FormControl>
 
             <FormControl>
@@ -160,9 +179,11 @@ const Profile: NextPage = () => {
               <Input
                 ref={imageInput}
                 type='file'
+                accept='image/*'
                 name='imageInput'
                 variant='flushed'
               />
+              {errorImage && <ErrorMessage message={errorImage} />}
             </FormControl>
 
             <Flex justifyContent='space-evenly' mt={8}>
