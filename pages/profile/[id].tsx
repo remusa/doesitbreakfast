@@ -11,36 +11,20 @@ import {
   useToast,
 } from '@chakra-ui/core'
 import { NextPage } from 'next'
-import React, { useRef } from 'react'
-import useForm from 'react-hook-form'
-import * as yup from 'yup'
+import React, { useRef, useState } from 'react'
 import CardList from '../../components/CardList'
-import ErrorMessage from '../../components/ErrorMessage'
 import Layout from '../../components/Layout'
 import Loading from '../../components/Loading'
 import { useAuth } from '../../context/Firebase/AuthContext'
 import { useFirestore } from '../../context/Firebase/FirestoreContext'
 import { firestore, storage } from '../../utils/firebase'
-import { usernameValidation } from '../../utils/validationSchemas'
-
-const validationSchema = yup.object().shape({
-  displayName: usernameValidation,
-})
 
 const Profile: NextPage = () => {
-  const {
-    register,
-    handleSubmit,
-    errors,
-    formState: { isSubmitting },
-  } = useForm({
-    validationSchema,
-  })
   const toast = useToast()
+  const [newDisplayName, setNewDisplayName] = useState('')
   const { user } = useAuth()
   const { data } = useFirestore()
   const imageInput = useRef(null)
-  console.log('data', data)
 
   if (!user || !user.user) {
     return <Loading />
@@ -49,13 +33,15 @@ const Profile: NextPage = () => {
   const { uid } = user
   const { displayName, email, photoURL } = user.user
 
-  const onSubmit = async ({ displayName }) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
     const userRef = firestore.doc(`users/${uid}`)
 
-    if (displayName) {
+    if (newDisplayName) {
       try {
-        userRef.update({ displayName })
-      } catch (e) {
+        userRef.update({ displayName: newDisplayName })
+        setNewDisplayName('')
         toast({
           title: 'Successfully updated profile.',
           description: 'Username changed.',
@@ -63,14 +49,16 @@ const Profile: NextPage = () => {
           duration: 5000,
           isClosable: true,
         })
+      } catch (e) {
+        console.error('Error updating displayName.')
       }
     }
 
     if (imageInput && imageInput.current && imageInput.current.files[0]) {
       const image = imageInput.current.files[0]
-      console.log('image', image)
 
       if (image) {
+        console.log('image', image)
         storage
           .ref()
           .child('user-profiles')
@@ -111,8 +99,8 @@ const Profile: NextPage = () => {
 
         <Divider />
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <fieldset disabled={isSubmitting} aria-busy={isSubmitting}>
+        <form onSubmit={handleSubmit}>
+          <fieldset>
             <Heading as='h2'>Update profile</Heading>
 
             <FormControl>
@@ -122,12 +110,25 @@ const Profile: NextPage = () => {
                 name='displayName'
                 className='input'
                 placeholder='Username'
-                ref={register}
+                variant='flushed'
+                value={newDisplayName}
+                onChange={e => {
+                  setNewDisplayName(e.target.value)
+                }}
+              />
+              {/* {errors.displayName && (
+                <ErrorMessage message={errors.displayName.message} />
+              )} */}
+            </FormControl>
+
+            <FormControl>
+              <FormLabel htmlFor='imageInput'>Image</FormLabel>
+              <Input
+                ref={imageInput}
+                type='file'
+                name='imageInput'
                 variant='flushed'
               />
-              {errors.displayName && (
-                <ErrorMessage message={errors.displayName.message} />
-              )}
             </FormControl>
 
             <Flex justifyContent='space-evenly' mt={8}>
