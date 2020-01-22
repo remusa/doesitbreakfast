@@ -12,12 +12,12 @@ interface Props {
 
 const FirestoreProvider: React.FC<Props> = ({ children }) => {
   const [data, setData] = useState<any | null>(null)
-  const { user, loggedIn } = useAuth()
+  const { user } = useAuth()
 
   useEffect(() => {
     // let snapshot = () => console.log('No unsubscribe')
     const getData = async () => {
-      if (user && loggedIn) {
+      if (user) {
         const entries = []
         const snapshot = await firestore
           .collection('users')

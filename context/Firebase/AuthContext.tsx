@@ -4,21 +4,17 @@ import { useRouter } from 'next/dist/client/router'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import {
   auth,
+  createUserProfileDocument,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithGoogle,
   signOut,
 } from '../../utils/firebase'
 
-interface IUser {
-  uid?: string
-  user: firebase.firestore.DocumentData
-}
+type TUser = firebase.firestore.DocumentData & { uid: string }
 
 interface IContext {
-  user: User
-  user: IUser
-  loggedIn: boolean
+  user: TUser
   loginWithGoogle: () => void
   loginWithEmail: (email: string, password: string) => void
   registerWithEmail: (
@@ -36,25 +32,23 @@ interface Props {
 }
 
 const AuthProvider: React.FC<Props> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(
-    auth.currentUser ? auth.currentUser : null
-  )
-  const [loggedIn, setIsLoggedIn] = useState<boolean>(
-    auth.currentUser ? true : false
-  )
+  const [user, setUser] = useState<TUser | null>(null)
   const router = useRouter()
   const toast = useToast()
 
   useEffect(() => {
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        setUser(user)
-        setIsLoggedIn(true)
+    const unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      if (userAuth) {
+        const userDocument = await createUserProfileDocument(userAuth)
+        userDocument.onSnapshot(snapshot => {
+          setUser({ uid: snapshot.id, user: snapshot.data() })
+        })
       } else {
         setUser(null)
-        setIsLoggedIn(false)
       }
     })
+
+    return () => unsubscribeFromAuth()
   }, [])
 
   const showToast = ({ title, description, status }) => {
@@ -68,15 +62,7 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
   }
 
   const loginWithGoogle = async () => {
-    try {
-      await signInWithGoogle()
-      showToast({
-        title: 'Logged in with Google successfully.',
-        description: 'Welcome!',
-        status: 'success',
-      })
-      router.push('/')
-    } catch (e) {
+    const response = await signInWithGoogle().catch(e => {
       console.error(
         `loginWithGoogle | ERROR LOGGING IN WITH GOOGLE: ${e.message}`
       )
@@ -85,6 +71,15 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
         description: `${e.message}. You may need to enable cookies to login with this option.`,
         status: 'error',
       })
+    })
+
+    if (response) {
+      showToast({
+        title: 'Logged in with Google successfully.',
+        description: 'Welcome!',
+        status: 'success',
+      })
+      router.push('/')
     }
   }
 
@@ -101,9 +96,6 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
     )
 
     if (response) {
-      const user: User = auth.currentUser
-      setUser(user)
-      setIsLoggedIn(true)
       showToast({
         title: 'Logged in successfully.',
         description: 'Welcome back!.',
@@ -132,8 +124,9 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
 
     if (response) {
       const user: User = auth.currentUser
-      setUser(user)
-      setIsLoggedIn(true)
+      await createUserProfileDocument(user, {
+        displayName,
+      })
       showToast({
         title: 'Account created successfully.',
         description: `Welcome!`,
@@ -146,7 +139,6 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
   const logout = async () => {
     await signOut()
     setUser(null)
-    setIsLoggedIn(false)
     showToast({
       title: 'Successfully logged out.',
       description: 'See you later!',
@@ -159,7 +151,6 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
-        loggedIn,
         loginWithGoogle,
         loginWithEmail,
         registerWithEmail,
