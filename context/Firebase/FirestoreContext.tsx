@@ -18,7 +18,6 @@ const FirestoreProvider: React.FC<Props> = ({ children }) => {
 
   useEffect(() => {
     if (!user) {
-      console.log('FirestoreContext | no user')
       return
     }
 

@@ -64,4 +64,12 @@ export const getUserDocument = async (uid: string) => {
   }
 }
 
+export const belongsToCurrentUser = (currentUser, author) => {
+  if (!currentUser) {
+    return false
+  }
+
+  return currentUser.uid === author.uid
+}
+
 export default firebaseApp
