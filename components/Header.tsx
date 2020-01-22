@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Text,
-  useDisclosure,
-} from '@chakra-ui/core'
+import { Box, Button, Flex, Heading, useDisclosure } from '@chakra-ui/core'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { useAuth } from '../context/Firebase/AuthContext'
@@ -19,6 +12,7 @@ const Header: React.FC<Props> = props => {
 
   const displayName = user ? user.user.displayName || user.user.email : ''
   const isAdmin = user ? user.user.isAdmin : false
+  const uid = user ? user.uid : ""
 
   const handleLogout = () => {
     logout()
@@ -80,10 +74,11 @@ const Header: React.FC<Props> = props => {
         ) : (
           <Flex flexDirection='row' justifyContent='space-between'>
             <Button type='button' variantColor='white' variant='outline'>
-              <Link href='/'>
+              <Link href='/profile/[uid]' as={`/profile/${uid}`}>
                 <a>{displayName}</a>
               </Link>
             </Button>
+
             <Button variantColor='teal' onClick={handleLogout}>
               Logout
             </Button>
