@@ -86,15 +86,12 @@ const Header: React.FC<Props> = props => {
           </>
         ) : (
           <Flex flexDirection='row' justifyContent='space-between'>
-            <Flex alignItems='center' mr={4}>
-              {displayName}
-            </Flex>
-            <Button
-              type='button'
-              variantColor='white'
-              variant='outline'
-              onClick={handleLogout}
-            >
+            <Button type='button' variantColor='white' variant='outline'>
+              <Link href='/'>
+                <a>{displayName}</a>
+              </Link>
+            </Button>
+            <Button variantColor='teal' onClick={handleLogout}>
               Logout
             </Button>
           </Flex>

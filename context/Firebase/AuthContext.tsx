@@ -70,7 +70,7 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
       console.log(`ERROR LOGGING IN WITH GOOGLE: ${e.message}`)
       showToast({
         title: 'Error logging in with Google.',
-        description: `${e.message}. You need to enable cookies to login with this option.`,
+        description: `${e.message}. You may need to enable cookies to login with this option.`,
         status: 'error',
       })
     }
