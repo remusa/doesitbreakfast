@@ -33,14 +33,32 @@ const Profile: NextPage = () => {
   const { uid } = user
   const { displayName, email, photoURL } = user.user
 
+  const handleClear = e => {
+    e.preventDefault()
+    setNewDisplayName('')
+    imageInput.current.value = null
+  }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const userRef = firestore.doc(`users/${uid}`)
 
     if (newDisplayName) {
-      try {
-        userRef.update({ displayName: newDisplayName })
+      const response = userRef
+        .update({ displayName: newDisplayName })
+        .catch(e => {
+          console.error('Error updating displayName.')
+          toast({
+            title: 'Error updating profile.',
+            description: "Username wasn't changed.",
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          })
+        })
+
+      if (response) {
         setNewDisplayName('')
         toast({
           title: 'Successfully updated profile.',
@@ -49,8 +67,6 @@ const Profile: NextPage = () => {
           duration: 5000,
           isClosable: true,
         })
-      } catch (e) {
-        console.error('Error updating displayName.')
       }
     }
 
@@ -58,15 +74,35 @@ const Profile: NextPage = () => {
       const image = imageInput.current.files[0]
 
       if (image) {
-        console.log('image', image)
-        storage
+        const response = storage
           .ref()
           .child('user-profiles')
           .child(uid)
           .child(image.name)
           .put(image)
           .then(res => res.ref.getDownloadURL())
-          .catch(e => console.log(`Error uploading file: ${e.message}`))
+          .then(photoURL => userRef.update({ photoURL }))
+          .catch(e => {
+            console.error(`Error uploading file: ${e.message}`)
+            toast({
+              title: 'Error updating profile.',
+              description: `Error uploading file: ${e.message}`,
+              status: 'error',
+              duration: 5000,
+              isClosable: true,
+            })
+          })
+
+        if (response) {
+          imageInput.current.value = null
+          toast({
+            title: 'Successfully updated profile.',
+            description: 'Profile picture changed.',
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+          })
+        }
       }
     }
   }
@@ -112,9 +148,7 @@ const Profile: NextPage = () => {
                 placeholder='Username'
                 variant='flushed'
                 value={newDisplayName}
-                onChange={e => {
-                  setNewDisplayName(e.target.value)
-                }}
+                onChange={e => setNewDisplayName(e.target.value)}
               />
               {/* {errors.displayName && (
                 <ErrorMessage message={errors.displayName.message} />
@@ -122,7 +156,7 @@ const Profile: NextPage = () => {
             </FormControl>
 
             <FormControl>
-              <FormLabel htmlFor='imageInput'>Image</FormLabel>
+              <FormLabel htmlFor='imageInput'>New profile picture</FormLabel>
               <Input
                 ref={imageInput}
                 type='file'
@@ -136,7 +170,12 @@ const Profile: NextPage = () => {
                 Update profile
               </Button>
 
-              <Button type='reset' variantColor='pink' variant='ghost'>
+              <Button
+                type='reset'
+                variantColor='pink'
+                variant='ghost'
+                onClick={handleClear}
+              >
                 Reset
               </Button>
             </Flex>
