@@ -10,8 +10,14 @@ import {
   signOut,
 } from '../../utils/firebase'
 
+interface IUser {
+  uid?: string
+  user: firebase.firestore.DocumentData
+}
+
 interface IContext {
   user: User
+  user: IUser
   loggedIn: boolean
   loginWithGoogle: () => void
   loginWithEmail: (email: string, password: string) => void
