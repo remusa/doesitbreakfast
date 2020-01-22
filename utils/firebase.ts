@@ -21,4 +21,45 @@ export const createUserWithEmailAndPassword = (email, password) =>
   auth.createUserWithEmailAndPassword(email, password)
 export const signOut = () => auth.signOut()
 
+export const createUserProfileDocument = async (user, additionalData = {}) => {
+  if (!user) {
+    return
+  }
+
+  const userRef = firestore.doc(`users/${user.uid}`)
+
+  const snapshot = await userRef.get()
+
+  if (!snapshot.exists) {
+    const { email, displayName, photoURL } = user
+    const createdAt = new Date()
+
+    try {
+      await userRef.set({
+        email,
+        displayName,
+        photoURL,
+        createdAt,
+        ...additionalData,
+      })
+    } catch (e) {
+      console.error('Error creating user.', e.message)
+    }
+  }
+
+  return getUserDocument(user.uid)
+}
+
+export const getUserDocument = async (uid: string) => {
+  if (!uid) {
+    return null
+  }
+
+  try {
+    return firestore.collection('users').doc(uid)
+  } catch (e) {
+    console.error('Error fetching user.', e.message)
+  }
+}
+
 export default firebaseApp
