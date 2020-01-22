@@ -35,7 +35,7 @@ const Login: NextPage<Props> = () => {
     register,
     handleSubmit,
     errors,
-    formState: { isSubmitting, dirty, isValid },
+    formState: { isSubmitting },
   } = useForm<IUser>({
     validationSchema,
   })
@@ -75,7 +75,9 @@ const Login: NextPage<Props> = () => {
                   ref={register({ required: true })}
                   variant='flushed'
                 />
-                {errors.email && <ErrorMessage message={errors.email.message} />}
+                {errors.email && (
+                  <ErrorMessage message={errors.email.message} />
+                )}
               </FormControl>
 
               <FormControl>
@@ -88,7 +90,9 @@ const Login: NextPage<Props> = () => {
                   ref={register({ required: true })}
                   variant='flushed'
                 />
-                {errors.password && <ErrorMessage message={errors.password.message} />}
+                {errors.password && (
+                  <ErrorMessage message={errors.password.message} />
+                )}
               </FormControl>
 
               <Flex justifyContent='space-evenly' mt={8}>
@@ -107,7 +111,12 @@ const Login: NextPage<Props> = () => {
         <Divider />
 
         <Flex justifyContent='center' mt={4}>
-          <Button type='button' variantColor='orange' variant='outline' onClick={loginWithGoogle}>
+          <Button
+            type='button'
+            variantColor='orange'
+            variant='outline'
+            onClick={loginWithGoogle}
+          >
             Login with Google
           </Button>
         </Flex>
