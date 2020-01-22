@@ -15,26 +15,26 @@ const FirestoreProvider: React.FC<Props> = ({ children }) => {
   const { user } = useAuth()
 
   useEffect(() => {
-    // let snapshot = () => console.log('No unsubscribe')
-    const getData = async () => {
-      if (user) {
+    if (!user) {
+      console.log('FirestoreContext | no user')
+      return
+    }
+
+    const unsubscribeFromFirestore = firestore
+      .collection('users')
+      .doc(user.uid)
+      .collection('entries')
+      .onSnapshot(snapshot => {
         const entries = []
-        const snapshot = await firestore
-          .collection('users')
-          .doc(user.uid)
-          .collection('entries')
-          .get()
         snapshot.forEach(doc => {
-          const newEntry = { ...doc.data(), id: doc }
+          const newEntry = { id: doc.id, ...doc.data() }
           entries.push(newEntry)
         })
         setData(entries)
         console.log('entries', entries)
-      }
-    }
+      })
 
-    getData()
-    // return () => snapshot()
+    return () => unsubscribeFromFirestore()
   }, [])
 
   return (
