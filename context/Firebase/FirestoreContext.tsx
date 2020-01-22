@@ -2,7 +2,9 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import { firestore } from '../../utils/firebase'
 import { useAuth } from './AuthContext'
 
-interface IContext {}
+interface IContext {
+  data: any
+}
 
 const FirestoreContext = createContext({} as IContext)
 
@@ -38,7 +40,7 @@ const FirestoreProvider: React.FC<Props> = ({ children }) => {
   }, [])
 
   return (
-    <FirestoreContext.Provider value={data}>
+    <FirestoreContext.Provider value={{ data }}>
       {children}
     </FirestoreContext.Provider>
   )
