@@ -2,7 +2,13 @@ import { useToast } from '@chakra-ui/core'
 import { User } from 'firebase'
 import { useRouter } from 'next/dist/client/router'
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import { fireauth, googleProvider } from '../../utils/firebase'
+import {
+  auth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signInWithGoogle,
+  signOut,
+} from '../../utils/firebase'
 
 interface IContext {
   user: User
@@ -21,16 +27,16 @@ interface Props {
 
 const AuthProvider: React.FC<Props> = ({ children }) => {
   const [user, setUser] = useState<User | null>(
-    fireauth.currentUser ? fireauth.currentUser : null
+    auth.currentUser ? auth.currentUser : null
   )
   const [loggedIn, setIsLoggedIn] = useState<boolean>(
-    fireauth.currentUser ? true : false
+    auth.currentUser ? true : false
   )
   const router = useRouter()
   const toast = useToast()
 
   useEffect(() => {
-    fireauth.onAuthStateChanged(user => {
+    auth.onAuthStateChanged(user => {
       if (user) {
         setUser(user)
         setIsLoggedIn(true)
@@ -41,89 +47,94 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
     })
   }, [])
 
+  const showToast = ({ title, description, status }) => {
+    toast({
+      title,
+      description,
+      status,
+      duration: 5000,
+      isClosable: true,
+    })
+  }
+
   const loginWithGoogle = async () => {
     try {
-      await fireauth.signInWithPopup(googleProvider)
-      toast({
+      await signInWithGoogle()
+      showToast({
         title: 'Logged in with Google successfully.',
         description: 'Welcome!',
         status: 'success',
-        duration: 5000,
-        isClosable: true,
       })
       router.push('/')
     } catch (e) {
       console.log(`ERROR LOGGING IN WITH GOOGLE: ${e.message}`)
-      toast({
+      showToast({
         title: 'Error logging in with Google.',
-        description: `${e.message}. You need to enable cookies to login with this option.`,
+        description: `${e.message}. You may need to enable cookies to login with this option.`,
         status: 'error',
-        duration: 5000,
-        isClosable: true,
       })
     }
   }
 
   const loginWithEmail = async (email: string, password: string) => {
-    const response = await fireauth
-      .signInWithEmailAndPassword(email, password)
-      .catch(error => {
+    const response = await signInWithEmailAndPassword(email, password).catch(
+      error => {
+        showToast({
+          title: 'Error logging in.',
+          description: `${error.message}`,
+          status: 'error',
+        })
         throw new Error(`${error.message} - ${error.code}`)
-      })
+      }
+    )
     if (response) {
-      const user: User = fireauth.currentUser
-      // const token = await user.getIdToken()
-      // firestore
-      //   .collection('users')
-      //   .doc(response.user.uid)
-      //   .set(user)
+      const user: User = auth.currentUser
       setUser(user)
       setIsLoggedIn(true)
-      toast({
+      showToast({
         title: 'Logged in successfully.',
         description: 'Welcome back!.',
         status: 'success',
-        duration: 5000,
-        isClosable: true,
       })
       router.push('/')
     }
   }
 
   const registerWithEmail = async (email: string, password: string) => {
-    const response = await fireauth
-      .createUserWithEmailAndPassword(email, password)
-      .catch(error => {
-        throw new Error(`${error.message} - ${error.code}`)
+    const response = await createUserWithEmailAndPassword(
+      email,
+      password
+    ).catch(error => {
+      showToast({
+        title: 'Error signing up.',
+        description: `${error.message}`,
+        status: 'error',
       })
+      throw new Error(`${error.message} - ${error.code}`)
+    })
     if (response) {
-      const user: User = fireauth.currentUser
+      const user: User = auth.currentUser
       setUser(user)
       setIsLoggedIn(true)
-      toast({
+      showToast({
         title: 'Account created successfully.',
         description: `Welcome!`,
         status: 'success',
-        duration: 5000,
-        isClosable: true,
       })
       router.push('/')
     }
   }
 
   const logout = async () => {
-    await fireauth.signOut()
-    // TODO: check if it works
+    await signOut()
     setUser(null)
     setIsLoggedIn(false)
-    toast({
+    showToast({
       title: 'Successfully logged out.',
       description: 'See you later!',
       status: 'info',
-      duration: 5000,
-      isClosable: true,
     })
-    router.push('/login')
+    router.push('/')
   }
 
   return (
