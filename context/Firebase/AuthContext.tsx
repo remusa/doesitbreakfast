@@ -127,7 +127,6 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
 
   const logout = async () => {
     await signOut()
-    // TODO: check if it works
     setUser(null)
     setIsLoggedIn(false)
     showToast({
@@ -135,7 +134,7 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
       description: 'See you later!',
       status: 'info',
     })
-    router.push('/login')
+    router.push('/')
   }
 
   return (
