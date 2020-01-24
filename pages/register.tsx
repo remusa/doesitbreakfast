@@ -1,25 +1,12 @@
-import {
-  Button,
-  Flex,
-  FormControl,
-  FormLabel,
-  Heading,
-  Input,
-  useToast,
-} from '@chakra-ui/core'
+import { Button, Flex, FormControl, FormLabel, Heading, Input, useToast } from '@chakra-ui/core'
 import { NextPage } from 'next'
 import React from 'react'
-import useForm from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import ErrorMessage from '../components/ErrorMessage'
 import Layout from '../components/Layout'
 import { useAuth } from '../context/Firebase/AuthContext'
-import {
-  confirmPasswordValidation,
-  emailValidation,
-  passwordValidation,
-  usernameValidation,
-} from '../utils/validationSchemas'
+import { confirmPasswordValidation, emailValidation, passwordValidation, usernameValidation } from '../utils/validationSchemas'
 import { IUser } from './login'
 
 const validationSchema = yup.object().shape({
@@ -48,18 +35,8 @@ const Register: NextPage<Props> = () => {
   })
   const toast = useToast()
 
-  const onSubmit = async ({ email, displayName, password }: IRUser) => {
-    try {
-      registerWithEmail(email, password, displayName)
-    } catch (e) {
-      toast({
-        title: 'Error creating new account.',
-        description: `${e.message}`,
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      })
-    }
+  const onSubmit = ({ email, displayName, password }: IRUser) => {
+    registerWithEmail(email, password, displayName)
   }
 
   return (
