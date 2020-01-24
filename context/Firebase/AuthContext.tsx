@@ -147,6 +147,26 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
     router.push('/')
   }
 
+  const passwordForgot = async (email: string) => {
+    await auth.sendPasswordResetEmail(email)
+    showToast({
+      title: 'Password reset email sent.',
+      description: 'Check your inbox and spam folders.',
+      status: 'info',
+    })
+  }
+
+  // const passwordChange = async (password: string) => {
+  //   await firebaseAdmin.auth().updateUser(me.uid, {
+  //       password,
+  //     });
+  //   showToast({
+  //     title: 'Successfully logged out.',
+  //     description: 'See you later!',
+  //     status: 'info',
+  //   })
+  // }
+
   return (
     <AuthContext.Provider
       value={{
