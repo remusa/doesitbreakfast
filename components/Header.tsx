@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Heading, useDisclosure } from '@chakra-ui/core'
+import { Box, Button, Flex, useDisclosure } from '@chakra-ui/core'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { useAuth } from '../context/Firebase/AuthContext'
@@ -12,7 +12,7 @@ const Header: React.FC<Props> = props => {
 
   const displayName = user ? user.user.displayName || user.user.email : ''
   const isAdmin = user ? user.user.isAdmin : false
-  const uid = user ? user.uid : ""
+  const uid = user ? user.uid : ''
 
   const handleLogout = () => {
     logout()
@@ -27,28 +27,31 @@ const Header: React.FC<Props> = props => {
       justifyContent='space-between'
       alignItems='center'
       wrap='wrap'
-      padding='1rem'
-      bg='teal.500'
-      color='white'
+      padding='1.25rem 1.75rem'
+      bg='#fdfdfd'
+      color='teal'
       {...props}
     >
       <Flex align='center' mr={5}>
-        <Link href='/'>
-          <a>
-            <Heading as='h1' size='lg' letterSpacing={'-.1rem'}>
-              Does it break a fast?
-            </Heading>
-          </a>
-        </Link>
+        <Button
+          size='lg'
+          letterSpacing={'-.1rem'}
+          variantColor='teal'
+          variant='ghost'
+        >
+          <Link href='/'>
+            <a>Does it break a fast?</a>
+          </Link>
+        </Button>
 
-        <Button variantColor='teal'>
+        <Button variantColor='teal' variant='ghost'>
           <Link href='/about'>
             <a>About</a>
           </Link>
         </Button>
 
         {user && isAdmin && (
-          <Button variantColor='teal'>
+          <Button variantColor='teal' variant='ghost'>
             <Link href='/submit'>
               <a>Submit food</a>
             </Link>
@@ -59,13 +62,13 @@ const Header: React.FC<Props> = props => {
       <Box>
         {!user ? (
           <>
-            <Button variantColor='teal'>
+            <Button variantColor='teal' variant='outline'>
               <Link href='/login'>
                 <a>Login</a>
               </Link>
             </Button>
 
-            <Button variantColor='teal'>
+            <Button variantColor='teal' variant='ghost'>
               <Link href='/register'>
                 <a>Register</a>
               </Link>
@@ -73,13 +76,13 @@ const Header: React.FC<Props> = props => {
           </>
         ) : (
           <Flex flexDirection='row' justifyContent='space-between'>
-            <Button type='button' variantColor='white' variant='outline'>
+            <Button type='button' variantColor='teal' variant='outline'>
               <Link href='/profile/[uid]' as={`/profile/${uid}`}>
                 <a>{displayName}</a>
               </Link>
             </Button>
 
-            <Button variantColor='teal' onClick={handleLogout}>
+            <Button onClick={handleLogout} variantColor='pink' variant='ghost'>
               Logout
             </Button>
           </Flex>

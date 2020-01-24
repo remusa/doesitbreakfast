@@ -11,7 +11,6 @@ interface Props {
 const Layout: React.FC<Props> = props => {
   return (
     <Flex w='100%' h='100vh' flexDirection='column' alignItems='center'>
-      {/* <Flex w='100%' h='100vh' flexDirection='column' alignItems='center'> */}
       <Header />
 
       <Flex
@@ -23,6 +22,7 @@ const Layout: React.FC<Props> = props => {
         justifyContent='flex-start'
         alignItems='center'
         paddingY='1.5rem'
+        bg='#fdfdfd'
       >
         {props.children}
       </Flex>
