@@ -18,7 +18,7 @@
     "firebase:init": "firebase login && firebase init"
   },
   "lint-staged": {
-    "*.{html,js,json,md,yml}": [
+    "*.{html,js,jsx,ts,tsx,json,md,yaml,yml}": [
       "prettier --write",
       "git add"
     ]
@@ -33,7 +33,7 @@
     "firebase-admin": "^8.9.2",
     "firebase-functions": "^3.3.0",
     "isomorphic-fetch": "^2.2.1",
-    "next": "latest",
+    "next": "^9.2.1",
     "next-offline": "^4.0.6",
     "react": "16.8.6",
     "react-dom": "16.8.6",
