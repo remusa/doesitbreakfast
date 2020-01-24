@@ -6,16 +6,21 @@ const withOffline = require('next-offline')
 
 require('dotenv').config()
 
+const fs = require('fs')
+const path = require('path')
+
+const withPlugins = require('next-compose-plugins')
+const bundleAnalyzer = require('@next/bundle-analyzer')
+
 const nextConfig = {
-  // env: require('./.env')nv,
   env: {
-    API_KEY: process.env.API_KEY,
-    AUTH_DOMAIN: process.env.AUTH_DOMAIN,
-    DATABASE_URL: process.env.DATABASE_URL,
-    PROJECT_ID: process.env.PROJECT_ID,
-    STORAGE_BUCKET: process.env.STORAGE_BUCKET,
-    MESSAGING_SENDER_ID: process.env.MESSAGING_SENDER_ID,
-    APP_ID: process.env.APP_ID,
+    FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
+    FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN,
+    FIREBASE_DATABASE_URL: process.env.FIREBASE_DATABASE_URL,
+    FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID,
+    FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET,
+    FIREBASE_MESSAGING_SENDER_ID: process.env.FIREBASE_MESSAGING_SENDER_ID,
+    FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
   },
   // exportTrailingSlash: true,
   // exportPathMap: async function() {
@@ -71,5 +76,9 @@ const nextConfig = {
     },
   },
 }
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+})
 
 module.exports = withOffline(nextConfig)

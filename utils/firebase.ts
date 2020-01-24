@@ -3,6 +3,7 @@ import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/storage'
 import firebaseConfig from './config.json'
+// import firebaseConfig from './config.js'
 
 const firebaseApp = !firebase.apps.length
   ? firebase.initializeApp(firebaseConfig)
