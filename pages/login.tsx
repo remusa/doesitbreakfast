@@ -1,16 +1,7 @@
-import {
-  Button,
-  Divider,
-  Flex,
-  FormControl,
-  FormLabel,
-  Heading,
-  Input,
-  useToast,
-} from '@chakra-ui/core'
+import { Button, Divider, Flex, FormControl, FormLabel, Heading, Input, useToast } from '@chakra-ui/core'
 import { NextPage } from 'next'
 import React from 'react'
-import useForm from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import ErrorMessage from '../components/ErrorMessage'
 import Layout from '../components/Layout'
@@ -41,18 +32,8 @@ const Login: NextPage<Props> = () => {
   })
   const toast = useToast()
 
-  const onSubmit = async ({ email, password }: IUser) => {
-    try {
-      loginWithEmail(email, password)
-    } catch (e) {
-      toast({
-        title: 'Error logging in.',
-        description: `${e.message}`,
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      })
-    }
+  const onSubmit = ({ email, password }: IUser) => {
+    loginWithEmail(email, password)
   }
 
   return (

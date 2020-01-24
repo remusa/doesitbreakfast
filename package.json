@@ -18,7 +18,7 @@
     "firebase:init": "firebase login && firebase init"
   },
   "lint-staged": {
-    "*.{html,js,json,md,yml}": [
+    "*.{html,js,jsx,ts,tsx,json,md,yaml,yml}": [
       "prettier --write",
       "git add"
     ]
@@ -29,38 +29,38 @@
     "@emotion/styled": "^10.0.27",
     "dotenv": "^8.2.0",
     "emotion-theming": "^10.0.27",
-    "firebase": "^7.5.0",
+    "firebase": "^7.7.0",
     "firebase-admin": "^8.9.2",
     "firebase-functions": "^3.3.0",
     "isomorphic-fetch": "^2.2.1",
-    "next": "latest",
+    "next": "^9.2.1",
     "next-offline": "^4.0.6",
     "react": "16.8.6",
     "react-dom": "16.8.6",
-    "react-hook-form": "^3.28.13",
+    "react-hook-form": "^4.6.2",
     "yup": "^0.28.0"
   },
   "devDependencies": {
-    "@babel/plugin-syntax-dynamic-import": "^7.7.4",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
     "@next/bundle-analyzer": "^9.2.1",
     "@testing-library/jest-dom": "^5.0.2",
     "@testing-library/react": "^9.4.0",
     "@types/jest": "^24.9.1",
-    "@types/node": "12.0.12",
-    "@types/react": "16.8.23",
-    "@types/react-dom": "16.8.4",
+    "@types/node": "13.5.0",
+    "@types/react": "16.9.19",
+    "@types/react-dom": "16.9.5",
     "babel-core": "^6.26.3",
     "babel-jest": "^25.1.0",
     "babel-plugin-dynamic-import-webpack": "^1.1.0",
     "babel-plugin-module-resolver": "^4.0.0",
-    "husky": "^3.1.0",
+    "husky": "^4.2.1",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^25.1.0",
-    "lint-staged": "^9.5.0",
+    "lint-staged": "^10.0.2",
     "netlify-cli": "^2.30.0",
     "next-compose-plugins": "^2.2.0",
     "prettier": "^1.19.1",
-    "typescript": "3.5.2"
+    "typescript": "3.7.5"
   },
   "license": "ISC"
 }
