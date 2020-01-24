@@ -27,7 +27,7 @@ const Card: React.FC<IProps> = ({ entry }) => {
         w='225px'
         h='250px'
         overflowY='hidden'
-        // backgroundColor={color}
+        backgroundColor='#fdfdfd'
         borderWidth='6.5px 0px 0px 0px'
         borderColor={entry.breaksFast ? 'red.500' : 'green.500'}
         borderRadius={6}

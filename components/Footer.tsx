@@ -12,6 +12,7 @@ const Footer: React.FC<Props> = () => {
       paddingY='1rem'
       justifyContent='space-between'
       align-items='center'
+      bg='#fdfdfd'
     >
       <Flex w={150} justify='space-between' flexShrink={0}>
         <Text>Built with </Text>
