@@ -21,6 +21,10 @@ export const signInWithEmailAndPassword = (email, password) =>
 export const createUserWithEmailAndPassword = (email, password) =>
   auth.createUserWithEmailAndPassword(email, password)
 export const signOut = () => auth.signOut()
+export const sendPasswordResetEmail = email =>
+  auth.sendPasswordResetEmail(email)
+export const confirmPasswordReset = (code, email) =>
+  auth.confirmPasswordReset(code, email)
 
 export const createUserProfileDocument = async (user, additionalData = {}) => {
   if (!user) {

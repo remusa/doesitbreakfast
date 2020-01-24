@@ -4,8 +4,10 @@ import { useRouter } from 'next/router'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import {
   auth,
+  confirmPasswordReset,
   createUserProfileDocument,
   createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithGoogle,
   signOut,
@@ -148,24 +150,47 @@ const AuthProvider: React.FC<Props> = ({ children }) => {
   }
 
   const passwordForgot = async (email: string) => {
-    await auth.sendPasswordResetEmail(email)
-    showToast({
-      title: 'Password reset email sent.',
-      description: 'Check your inbox and spam folders.',
-      status: 'info',
+    const response = await sendPasswordResetEmail(email).catch(error => {
+      console.error(`passwordForgot | ${error.message} - ${error.code}`)
+      showToast({
+        title: 'Error sending password reset email.',
+        description: `${error.message}`,
+        status: 'error',
+      })
     })
+
+    // @ts-ignore
+    if (response) {
+      showToast({
+        title: 'Password reset email sent.',
+        description: 'Remember to check your inbox and spam folders.',
+        status: 'info',
+      })
+    }
   }
 
-  // const passwordChange = async (password: string) => {
-  //   await firebaseAdmin.auth().updateUser(me.uid, {
-  //       password,
-  //     });
-  //   showToast({
-  //     title: 'Successfully logged out.',
-  //     description: 'See you later!',
-  //     status: 'info',
-  //   })
-  // }
+  const passwordChange = async (code: string, password: string) => {
+    // const response = await user.updateUser(user.uid, {
+    //   password,
+    // })
+    const response = await confirmPasswordReset(code, password).catch(error => {
+      console.error(`passwordChange | ${error.message} - ${error.code}`)
+      showToast({
+        title: 'Error confirming password change.',
+        description: `${error.message}`,
+        status: 'error',
+      })
+    })
+
+    // @ts-ignore
+    if (response) {
+      showToast({
+        title: 'Successfully logged out.',
+        description: 'See you later!',
+        status: 'info',
+      })
+    }
+  }
 
   return (
     <AuthContext.Provider
