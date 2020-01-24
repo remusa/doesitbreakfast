@@ -1,5 +1,5 @@
 {
-  "name": "with-typescript-styled-components",
+  "name": "does-it-break-fast",
   "version": "1.0.0",
   "scripts": {
     "dev": "next",
@@ -11,6 +11,7 @@
     "deploy:now": "now --prod",
     "deploy:netlify": "netlify deploy --dir=./public -p -m \"$(git log -1 --pretty=%B)\"",
     "deploy:firebase": "npm run build && npm run export && firebase deploy",
+    "deploy:functions": "firebase deploy --only functions",
     "firebase:install": "npm install -g firebase-tools firebase-admin",
     "firebase:init": "firebase login && firebase init"
   },
@@ -26,6 +27,8 @@
     "@emotion/styled": "^10.0.27",
     "emotion-theming": "^10.0.27",
     "firebase": "^7.5.0",
+    "firebase-admin": "^8.9.2",
+    "firebase-functions": "^3.3.0",
     "isomorphic-fetch": "^2.2.1",
     "next": "latest",
     "next-offline": "^4.0.6",
