@@ -55,7 +55,7 @@
     "babel-plugin-module-resolver": "^4.0.0",
     "husky": "^4.2.1",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^25.1.0",
+    "jest": "^29.3.1",
     "lint-staged": "^10.0.2",
     "netlify-cli": "^2.30.0",
     "next-compose-plugins": "^2.2.0",
